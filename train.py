@@ -8,7 +8,7 @@ import matplotlib
 
 from torch.utils.data import DataLoader
 from torchvision.utils import make_grid
-import runner
+import engine
 from utils import save_reconstructed_images, image_to_vid, save_loss_plot, save_latent_scatter
 import os
 path = os.getcwd()
@@ -22,7 +22,7 @@ model = ConvVAE().to(device)
 
 # set the learning parameters
 lr = 0.001
-epochs = 5
+epochs = 2
 batch_size = 64
 optimizer = optim.Adam(model.parameters(), lr=lr)
 
@@ -52,10 +52,10 @@ train_loss = []
 valid_loss = []
 for epoch in range(epochs):
     print(f"Epoch {epoch+1} of {epochs}")
-    train_epoch_loss = runner.train(
+    train_epoch_loss = engine.train(
         model, trainloader, trainset, device, optimizer,
     )
-    valid_epoch_loss, recon_images = runner.validate(
+    valid_epoch_loss, recon_images = engine.validate(
         model, testloader, testset, device
     )
     train_loss.append(train_epoch_loss)
@@ -68,7 +68,7 @@ for epoch in range(epochs):
     print(f"Train Loss: {train_epoch_loss:.4f}")
     print(f"Val Loss: {valid_epoch_loss:.4f}")
 
-mus, ys = runner.latent(
+mus, ys = engine.latent(
         model, testloader, testset, device
     )
 
