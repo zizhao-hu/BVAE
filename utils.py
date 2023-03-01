@@ -1,5 +1,7 @@
 import imageio
 import numpy as np
+import torch
+import torch.nn as nn
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 from torchvision.utils import save_image
@@ -33,10 +35,17 @@ def save_latent_scatter(latent, y):
     for i in range(4):
         for j in range(i,4):
     
-            scatter = plt.subplot(4,4,4*i+j+1).scatter(latent[:,i], latent[:,j], c=y, cmap = 'tab10', s =5)
-
-    plt.xlabel("Latent dimension 1")
-    plt.ylabel("Latent dimension 2")
-    legend = plt.legend(*scatter.legend_elements(), loc="upper right", title="Classes")
-    plt.savefig(path +'/outputs/nonbilatent.jpg')
+            scatter = plt.subplot(4,4,4*i+j+1).scatter(latent[:,i], latent[:,j], c=y, cmap = 'tab10', s =3)
+            if j==i:
+                plt.xlabel(f"Latent dimension {i}")
+                plt.ylabel(f"Latent dimension {j}")
+    plt.axis('square')
+    
+    plt.figlegend(*scatter.legend_elements(), loc = 'lower center', ncol=5, labelspacing=0.)
+    plt.savefig(path +'/outputs/latent.jpg')
     plt.show()
+
+def le_score(weight):
+    vec = nn.functional.normalize(weight, p=2, dim=1)
+    vec = torch.pow(torch.mm(vec,vec.T),2)
+    return torch.sum(vec)/vec.shape[0]/vec.shape[1]

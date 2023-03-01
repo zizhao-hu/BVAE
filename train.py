@@ -9,7 +9,7 @@ import matplotlib
 from torch.utils.data import DataLoader
 from torchvision.utils import make_grid
 import engine
-from utils import save_reconstructed_images, image_to_vid, save_loss_plot, save_latent_scatter
+from utils import save_reconstructed_images, image_to_vid, save_loss_plot, save_latent_scatter, le_score
 import os
 path = os.getcwd()
 
@@ -22,7 +22,7 @@ model = ConvVAE().to(device)
 
 # set the learning parameters
 lr = 0.001
-epochs = 100
+epochs = 1
 batch_size = 64
 optimizer = optim.Adam(model.parameters(), lr=lr)
 
@@ -77,4 +77,5 @@ image_to_vid(grid_images)
 # save the loss plots to disk
 save_loss_plot(train_loss, valid_loss)
 save_latent_scatter(mus, ys)
+print("le_score:",le_score(model.fc_mu.weight.data))
 print('TRAINING COMPLETE')
