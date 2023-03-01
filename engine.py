@@ -14,7 +14,7 @@ def train(model, dataloader, dataset, device, optimizer):
         reconstruction, mu, log_var = model(data)
         bce_loss, var_loss = model.loss(data, reconstruction, mu, log_var)
         if model.C != 0:
-            var_loss = abs(var_loss - C)
+            var_loss = abs(var_loss - model.C)
         if model.beta != 1:
             var_loss = var_loss * model.beta
         loss = bce_loss + var_loss
