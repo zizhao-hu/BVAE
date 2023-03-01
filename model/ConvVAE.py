@@ -12,9 +12,9 @@ latent_dim = 16 # latent dimension for sampling
 
 class ConvVAE(nn.Module):
     # beta-VAE, Disentanling beta-VAE, binarized-VAE
-    def __init__(self, beta = 1, C = 0, r = 0):
+    def __init__(self, name="ConvVAE", beta = 1, C = 0, r = 0):
         super(ConvVAE, self).__init__()
-    
+        self.name = name
         # encoder
         self.enc1 = nn.Conv2d(
             in_channels=image_channels, out_channels=init_channels, kernel_size=kernel_size, 

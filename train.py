@@ -5,11 +5,12 @@ from model.ConvVAE import ConvVAE
 import torchvision.transforms as transforms
 import torchvision
 import matplotlib
-
+from collections import defaultdict
+tree = lambda: defaultdict(tree)
 from torch.utils.data import DataLoader
 from torchvision.utils import make_grid
 import engine
-from utils import save_reconstructed_images, image_to_vid, save_loss_plot, save_latent_scatter, le_score
+from utils import save_reconstructed_images, image_to_vid, save_plot, save_latent_scatter, le_score
 import os
 path = os.getcwd()
 
@@ -18,13 +19,15 @@ matplotlib.style.use('ggplot')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # initialize the model
-model = ConvVAE(r=0.5).to(device)
+bmodel = ConvVAE(r=1, name = "Binarized-1").to(device)
+amodel = ConvVAE().to(device)
 
 # set the learning parameters
 lr = 0.001
-epochs = 30
+epochs = 1
 batch_size = 64
-optimizer = optim.Adam(model.parameters(), lr=lr)
+aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
+boptimizer = optim.Adam(bmodel.parameters(), lr=lr)
 
 # a list to save all the reconstructed images in PyTorch grid format
 grid_images = []
@@ -48,34 +51,41 @@ testloader = DataLoader(
     testset, batch_size=batch_size, shuffle=False
 )
 
-train_loss = []
-valid_loss = []
-for epoch in range(epochs):
-    print(f"Epoch {epoch+1} of {epochs}")
-    train_epoch_loss = engine.train(
-        model, trainloader, trainset, device, optimizer,
-    )
-    valid_epoch_loss, recon_images = engine.validate(
-        model, testloader, testset, device
-    )
-    train_loss.append(train_epoch_loss)
-    valid_loss.append(valid_epoch_loss)
-    # save the reconstructed images from the validation loop
-    save_reconstructed_images(recon_images, epoch+1)
-    # convert the reconstructed images to PyTorch image grid format
-    image_grid = make_grid(recon_images.detach().cpu())
-    grid_images.append(image_grid)
-    print(f"Train Loss: {train_epoch_loss:.4f}")
-    print(f"Val Loss: {valid_epoch_loss:.4f}")
+dict = defaultdict(defaultdict(list))
+models = [amodel, bmodel]
+optimizers = [aoptimizer, boptimizer]
 
-mus, ys = engine.latent(
-        model, testloader, testset, device
-    )
+for i, model in enumerate(models):
+    optimizer = optimizers[i]
+    for epoch in range(epochs):
+        print(f"{model.name}: Epoch {epoch+1} of {epochs}")
+        train_epoch_loss = engine.train(
+            model, trainloader, trainset, device, optimizer,
+        )
+        valid_epoch_loss, recon_images = engine.validate(
+            model, testloader, testset, device
+        )
+        le_score = le_score(model.fc_mu.weight.data)
+        dict[model.name]["train_loss"].append(train_epoch_loss)
+        dict[model.name]["valid_loss"].append(valid_epoch_loss)
+        dict[model.name]["le_score"].append(le_score)
+       
+        # # save the reconstructed images from the validation loop
+        # save_reconstructed_images(recon_images, epoch+1)
+        # # convert the reconstructed images to PyTorch image grid format
+        # image_grid = make_grid(recon_images.detach().cpu())
+        # grid_images.append(image_grid)
+        # print(f"Train Loss: {train_epoch_loss:.4f}")
+        # print(f"Val Loss: {valid_epoch_loss:.4f}")
 
-    # save the reconstructions as a .gif file
-image_to_vid(grid_images)
-# save the loss plots to disk
-save_loss_plot(train_loss, valid_loss)
-save_latent_scatter(mus, ys)
-print("le_score:",le_score(model.fc_mu.weight.data))
+
+#     # save the reconstructions as a .gif file
+# image_to_vid(grid_images)
+# # save the loss plots to disk
+save_plot(dict,xlabel = "Epochs",ylabel ="valid_loss")
+save_plot(dict,xlabel = "Epochs",ylabel ="le_score")
+
+save_latent_scatter(amodel, testloader, testset, device)
+save_latent_scatter(bmodel, testloader, testset, device)
+
 print('TRAINING COMPLETE')
