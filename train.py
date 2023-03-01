@@ -9,7 +9,7 @@ import matplotlib
 from torch.utils.data import DataLoader
 from torchvision.utils import make_grid
 import runner
-from utils import save_reconstructed_images, image_to_vid, save_loss_plot
+from utils import save_reconstructed_images, image_to_vid, save_loss_plot, save_latent_scatter
 import os
 path = os.getcwd()
 
@@ -68,8 +68,13 @@ for epoch in range(epochs):
     print(f"Train Loss: {train_epoch_loss:.4f}")
     print(f"Val Loss: {valid_epoch_loss:.4f}")
 
+mus, ys = runner.latent(
+        model, testloader, testset, device
+    )
+
     # save the reconstructions as a .gif file
 image_to_vid(grid_images)
 # save the loss plots to disk
 save_loss_plot(train_loss, valid_loss)
+save_latent_scatter(mus, ys)
 print('TRAINING COMPLETE')

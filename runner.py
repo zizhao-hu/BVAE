@@ -41,3 +41,17 @@ def validate(model, dataloader, dataset, device):
                 recon_images = reconstruction
     val_loss = running_loss / counter
     return val_loss, recon_images
+
+def latent(model, dataloader, dataset, device):
+    model.eval()
+    with torch.no_grad():
+        for i, data, y in tqdm(enumerate(dataloader), total=int(len(dataset)/dataloader.batch_size)):
+            data = data.to(device)
+            mu, _ = model.encode(data)
+            if i == 0:
+                mus = mu
+                ys = y
+            else:
+                mus = torch.concatenate((mus,mu))
+                ys = torch.concatenate((ys,y))
+    return mus, ys
