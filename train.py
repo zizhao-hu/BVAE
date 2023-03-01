@@ -10,6 +10,8 @@ from torch.utils.data import DataLoader
 from torchvision.utils import make_grid
 import runner
 from utils import save_reconstructed_images, image_to_vid, save_loss_plot
+import os
+path = os.getcwd()
 
 matplotlib.style.use('ggplot')
 
@@ -33,14 +35,14 @@ transform = transforms.Compose([
 ])
 # training set and train data loader
 trainset = torchvision.datasets.MNIST(
-    root='/data', train=True, download=True, transform=transform
+    root=path +'/data', train=True, download=True, transform=transform
 )
 trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
 )
 # validation set and validation data loader
 testset = torchvision.datasets.MNIST(
-    root='/data', train=False, download=True, transform=transform
+    root=path +'/data', train=False, download=True, transform=transform
 )
 testloader = DataLoader(
     testset, batch_size=batch_size, shuffle=False
