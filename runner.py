@@ -1,6 +1,6 @@
 
 import torch; torch.manual_seed(0)
-import tqdm
+from tqdm import tqdm
 
 def train(model, dataloader, dataset, device, optimizer):
     model.train()
