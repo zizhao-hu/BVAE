@@ -23,7 +23,6 @@ lr = 0.001
 epochs = 100
 batch_size = 64
 optimizer = optim.Adam(model.parameters(), lr=lr)
-criterion = nn.BCELoss(reduction='sum')
 
 # a list to save all the reconstructed images in PyTorch grid format
 grid_images = []
@@ -55,7 +54,7 @@ for epoch in range(epochs):
         model, trainloader, trainset, device, optimizer, criterion
     )
     valid_epoch_loss, recon_images = runner.validate(
-        model, testloader, testset, device, criterion
+        model, testloader, testset, device
     )
     train_loss.append(train_epoch_loss)
     valid_loss.append(valid_epoch_loss)
