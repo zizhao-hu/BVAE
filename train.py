@@ -22,7 +22,7 @@ model = ConvVAE().to(device)
 
 # set the learning parameters
 lr = 0.001
-epochs = 100
+epochs = 5
 batch_size = 64
 optimizer = optim.Adam(model.parameters(), lr=lr)
 
