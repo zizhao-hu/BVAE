@@ -17,6 +17,7 @@ def train(model, dataloader, dataset, device, optimizer):
         loss.backward()
         running_loss += loss.item()
         optimizer.step()
+        print(loss.item())
     train_loss = running_loss / counter 
     return train_loss
 
