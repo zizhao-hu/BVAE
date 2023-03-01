@@ -65,10 +65,10 @@ for i, model in enumerate(models):
         valid_epoch_loss, recon_images = engine.validate(
             model, testloader, testset, device
         )
-        le_score = le_score(model.fc_mu.weight.data)
+        myle_score = le_score(model.fc_mu.weight.data)
         dict[model.name]["train_loss"].append(train_epoch_loss)
         dict[model.name]["valid_loss"].append(valid_epoch_loss)
-        dict[model.name]["le_score"].append(le_score)
+        dict[model.name]["le_score"].append(myle_score)
        
         # # save the reconstructed images from the validation loop
         # save_reconstructed_images(recon_images, epoch+1)
