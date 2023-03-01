@@ -19,16 +19,20 @@ matplotlib.style.use('ggplot')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # initialize the model
-bmodel = ConvVAE(r=1, name = "Binarized-1").to(device)
 amodel = ConvVAE().to(device)
+bmodel = ConvVAE(r=1, name = "Binarized-1").to(device)
+cmodel = ConvVAE(beta=10, name = "Beta-10").to(device)
+dmodel = ConvVAE(beta = 10, C=20, name = "DBeta-C").to(device)
 
 # set the learning parameters
 lr = 0.001
 epochs = 1
 batch_size = 64
+
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
 boptimizer = optim.Adam(bmodel.parameters(), lr=lr)
-
+coptimizer = optim.Adam(cmodel.parameters(), lr=lr)
+doptimizer = optim.Adam(dmodel.parameters(), lr=lr)
 # a list to save all the reconstructed images in PyTorch grid format
 grid_images = []
 
@@ -52,12 +56,14 @@ testloader = DataLoader(
 )
 
 dict = defaultdict(lambda: defaultdict(list))
-models = [amodel, bmodel]
-optimizers = [aoptimizer, boptimizer]
+models = [amodel, bmodel, cmodel, dmodel]
+optimizers = [aoptimizer, boptimizer, coptimizer,doptimizer]
 
 for i, model in enumerate(models):
     optimizer = optimizers[i]
     for epoch in range(epochs):
+        if model.C != 0:
+            model.C = epoch/2+0.01
         print(f"{model.name}: Epoch {epoch+1} of {epochs}")
         train_epoch_loss = engine.train(
             model, trainloader, trainset, device, optimizer,
@@ -68,7 +74,7 @@ for i, model in enumerate(models):
         myle_score = le_score(model.fc_mu.weight.data)
         dict[model.name]["train_loss"].append(train_epoch_loss)
         dict[model.name]["valid_loss"].append(valid_epoch_loss)
-        dict[model.name]["le_score"].append(myle_score)
+        dict[model.name]["le_score"].append(myle_score.item())
        
         # # save the reconstructed images from the validation loop
         # save_reconstructed_images(recon_images, epoch+1)
@@ -87,5 +93,7 @@ save_plot(dict,xlabel = "Epochs",ylabel ="le_score")
 
 save_latent_scatter(amodel, testloader, testset, device)
 save_latent_scatter(bmodel, testloader, testset, device)
+save_latent_scatter(cmodel, testloader, testset, device)
+save_latent_scatter(dmodel, testloader, testset, device)
 
 print('TRAINING COMPLETE')

@@ -13,6 +13,10 @@ def train(model, dataloader, dataset, device, optimizer):
         optimizer.zero_grad()
         reconstruction, mu, log_var = model(data)
         bce_loss, var_loss = model.loss(data, reconstruction, mu, log_var)
+        if model.C != 0:
+            var_loss = abs(var_loss - C)
+        if model.beta != 1:
+            var_loss = var_loss * model.beta
         loss = bce_loss + var_loss
         loss.backward()
         running_loss += loss.item()
@@ -42,16 +46,3 @@ def validate(model, dataloader, dataset, device):
     val_loss = running_loss / counter
     return val_loss, recon_images
 
-def latent(model, dataloader, dataset, device):
-    model.eval()
-    with torch.no_grad():
-        for i, (data, y) in tqdm(enumerate(dataloader), total=int(len(dataset)/dataloader.batch_size)):
-            data = data.to(device)
-            mu, _ = model.encode(data)
-            if i == 0:
-                mus = mu
-                ys = y
-            else:
-                mus = torch.concatenate((mus,mu))
-                ys = torch.concatenate((ys,y))
-    return mus, ys
