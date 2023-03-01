@@ -101,7 +101,7 @@ class ConvVAE(nn.Module):
 
     def forward(self, x):
         # encoding
-        mu, log_var = self.encoder(x)
+        mu, log_var = self.encode(x)
         # get the latent vector through reparameterization
         z = self.reparameterize(mu, log_var)
         reconstruction = self.decode(z)
