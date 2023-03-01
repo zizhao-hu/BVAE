@@ -27,6 +27,8 @@ def save_loss_plot(train_loss, valid_loss):
     plt.show()
 
 def save_latent_scatter(latent, y):
+    latent = latent.detach().cpu().numpy()
+    y = y.cpu().numpy()
     scatter = plt.scatter(latent[:, 0], latent[:, 1], c=y, cmap='tab10')
     plt.xlabel("Latent dimension 1")
     plt.ylabel("Latent dimension 2")
