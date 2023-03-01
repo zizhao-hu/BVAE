@@ -94,7 +94,7 @@ class ConvVAE(nn.Module):
         return reconstruction
     
     def loss(self, x, reconstruction, mu, log_var):
-        recon_bce = nn.BCELoss(reduction='sum')(x, reconstruction)
+        recon_bce = nn.BCELoss(reduction='mean')(x, reconstruction)
         print(recon_bce.item())
         var_loss =  -0.5 * torch.sum(1 + log_var - (torch.abs(mu)-self.r).pow(2) - log_var.exp())       
         return recon_bce, var_loss
@@ -106,6 +106,4 @@ class ConvVAE(nn.Module):
         # get the latent vector through reparameterization
         z = self.reparameterize(mu, log_var)
         reconstruction = self.decode(z)
-        print(reconstruction[0])
-        print(x[0])
         return reconstruction, mu, log_var
