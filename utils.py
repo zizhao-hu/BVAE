@@ -52,9 +52,10 @@ def save_latent_scatter(model, dataloader, dataset, device):
     plt.figure(figsize=(10,10))
     for i in range(4):
         for j in range(i,4):
-    
-            scatter = plt.subplot(4,4,4*i+j+1).scatter(latent[:,j], latent[:,i], c=y, cmap = 'tab10', s =2)
             if j==i:
+                continue
+            scatter = plt.subplot(4,4,4*i+j+1).scatter(latent[:,j], latent[:,i], c=y, cmap = 'tab10', s =2)
+            if j == i+1:
                 plt.xlabel(f"Latent {j+1}")
                 plt.ylabel(f"Latent {i+1}")
             plt.axis('square')
