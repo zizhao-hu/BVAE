@@ -30,7 +30,7 @@ def save_plot(dict, xlabel='x', ylabel='y'):
     plt.savefig(cwd +'/outputs/' + f"{ylabel}.jpg")
     plt.show()
 
-def latent(model, dataloader, dataset, device):
+def get_latent(model, dataloader, dataset, device):
     model.eval()
     with torch.no_grad():
         for i, (data, y) in tqdm(enumerate(dataloader), total=int(len(dataset)/dataloader.batch_size)):
@@ -45,7 +45,7 @@ def latent(model, dataloader, dataset, device):
     return mus, ys
 
 def save_latent_scatter(model, dataloader, dataset, device):
-    latent, y = latent(model, dataloader, dataset, device)
+    latent, y = get_latent(model, dataloader, dataset, device)
     latent = latent.detach().cpu().numpy()
     y = y.cpu().numpy()
     plt.figure(figsize=(10,10))
