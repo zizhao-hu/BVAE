@@ -13,7 +13,6 @@ def train(model, dataloader, dataset, device, optimizer):
         optimizer.zero_grad()
         reconstruction, mu, log_var = model(data)
         bce_loss, var_loss = model.loss(data, reconstruction, mu, log_var)
-        print(bce_loss.item(), var_loss.item())
         loss = bce_loss + var_loss
         loss.backward()
         running_loss += loss.item()
