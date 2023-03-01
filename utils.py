@@ -39,7 +39,7 @@ def save_latent_scatter(latent, y):
             if j==i:
                 plt.xlabel(f"Latent dimension {i}")
                 plt.ylabel(f"Latent dimension {j}")
-    plt.axis('square')
+        plt.axis('square')
     
     plt.figlegend(*scatter.legend_elements(), loc = 'lower center', ncol=5, labelspacing=0.)
     plt.savefig(path +'/outputs/latent.jpg')
