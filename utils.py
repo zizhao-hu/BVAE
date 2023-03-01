@@ -5,6 +5,7 @@ import torch.nn as nn
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 from torchvision.utils import save_image
+from tqdm import tqdm
 import os
 
 to_pil_image = transforms.ToPILImage()
