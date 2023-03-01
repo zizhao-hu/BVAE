@@ -58,6 +58,7 @@ def save_latent_scatter(model, dataloader, dataset, device):
                 plt.xlabel(f"Latent {j+1}")
                 plt.ylabel(f"Latent {i+1}")
             plt.axis('square')
+            plt.axis('equal')
     
     plt.figlegend(*scatter.legend_elements(), loc = 'lower center', ncol=5, labelspacing=0.)
     plt.savefig(cwd +f'/outputs/{model.name}_latent.jpg')
