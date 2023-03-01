@@ -1,7 +1,7 @@
 import torch
 import torch.optim as optim
 import torch.nn as nn
-from model import ConvVAE
+from model.ConvVAE import ConvVAE
 import torchvision.transforms as transforms
 import torchvision
 import matplotlib
