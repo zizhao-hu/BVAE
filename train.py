@@ -74,7 +74,7 @@ for i, model in enumerate(models):
         myle_score = le_score(model.fc_mu.weight.data)
         dict[model.name]["train_loss"].append(train_epoch_loss)
         dict[model.name]["valid_loss"].append(valid_epoch_loss)
-        dict[model.name]["le_score"].append(myle_score.item())
+        dict[model.name]["le_score"].append(myle_score)
        
         # # save the reconstructed images from the validation loop
         # save_reconstructed_images(recon_images, epoch+1)
