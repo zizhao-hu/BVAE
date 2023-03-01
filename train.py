@@ -20,10 +20,10 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # initialize the model
 amodel = ConvVAE().to(device)
-bmodel = ConvVAE(r=1, name = "Binarized-r1").to(device)
+bmodel = ConvVAE(r=0.5, name = "Binarized-r1").to(device)
 cmodel = ConvVAE(beta=10, name = "Beta-b10").to(device)
 dmodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
-
+emodel = ConvVAE(beta = 10, C=20, r=0.5,name = "BDBeta-b10-C20-r1").to(device)
 # set the learning parameters
 lr = 0.001
 epochs = 40
@@ -33,6 +33,8 @@ aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
 boptimizer = optim.Adam(bmodel.parameters(), lr=lr)
 coptimizer = optim.Adam(cmodel.parameters(), lr=lr)
 doptimizer = optim.Adam(dmodel.parameters(), lr=lr)
+eoptimizer = optim.Adam(emodel.parameters(), lr=lr)
+
 # a list to save all the reconstructed images in PyTorch grid format
 grid_images = []
 

@@ -53,7 +53,7 @@ def save_latent_scatter(model, dataloader, dataset, device):
     for i in range(4):
         for j in range(i,4):
     
-            scatter = plt.subplot(4,4,4*i+j+1).scatter(latent[:,j], latent[:,i], c=y, cmap = 'tab10', s =3)
+            scatter = plt.subplot(4,4,4*i+j+1).scatter(latent[:,j], latent[:,i], c=y, cmap = 'tab10', s =2)
             if j==i:
                 plt.xlabel(f"Latent {j+1}")
                 plt.ylabel(f"Latent {i+1}")

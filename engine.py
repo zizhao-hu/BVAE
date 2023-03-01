@@ -38,7 +38,7 @@ def validate(model, dataloader, dataset, device):
             reconstruction, mu, log_var = model(data)
             bce_loss, var_loss = model.loss(data, reconstruction, mu, log_var)
             loss = bce_loss + var_loss
-            running_loss += loss.item()
+            running_loss += bce_loss.item()
         
             # save the last batch input and output of every epoch
             if i == int(len(dataset)/dataloader.batch_size) - 1:
