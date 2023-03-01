@@ -51,7 +51,7 @@ valid_loss = []
 for epoch in range(epochs):
     print(f"Epoch {epoch+1} of {epochs}")
     train_epoch_loss = runner.train(
-        model, trainloader, trainset, device, optimizer, criterion
+        model, trainloader, trainset, device, optimizer,
     )
     valid_epoch_loss, recon_images = runner.validate(
         model, testloader, testset, device
