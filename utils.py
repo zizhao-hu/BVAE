@@ -29,7 +29,12 @@ def save_loss_plot(train_loss, valid_loss):
 def save_latent_scatter(latent, y):
     latent = latent.detach().cpu().numpy()
     y = y.cpu().numpy()
-    scatter = plt.scatter(latent[:, 0], latent[:, 1], c=y, cmap='tab10')
+    plt.figure(figsize=(10,10))
+    for i in range(4):
+        for j in range(i,4):
+    
+            scatter = plt.subplot(4,4,4*i+j+1).scatter(latent[:,i], latent[:,j], c=y, cmap = 'tab10', s =5)
+
     plt.xlabel("Latent dimension 1")
     plt.ylabel("Latent dimension 2")
     legend = plt.legend(*scatter.legend_elements(), loc="upper right", title="Classes")
