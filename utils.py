@@ -37,9 +37,9 @@ def save_latent_scatter(latent, y):
     
             scatter = plt.subplot(4,4,4*i+j+1).scatter(latent[:,i], latent[:,j], c=y, cmap = 'tab10', s =3)
             if j==i:
-                plt.xlabel(f"Latent dimension {i}")
-                plt.ylabel(f"Latent dimension {j}")
-        plt.axis('square')
+                plt.xlabel(f"Latent dimension {i+1}")
+                plt.ylabel(f"Latent dimension {j+1}")
+            plt.axis('square')
     
     plt.figlegend(*scatter.legend_elements(), loc = 'lower center', ncol=5, labelspacing=0.)
     plt.savefig(path +'/outputs/latent.jpg')
