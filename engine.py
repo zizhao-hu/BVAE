@@ -28,7 +28,8 @@ def train(model, dataloader, dataset, device, optimizer):
 
 def validate(model, dataloader, dataset, device):
     model.eval()
-    running_loss = 0.0
+    running_bce_loss = 0.0
+    running_elbo = 0.0
     counter = 0
     with torch.no_grad():
         for i, data in tqdm(enumerate(dataloader), total=int(len(dataset)/dataloader.batch_size)):
@@ -38,11 +39,13 @@ def validate(model, dataloader, dataset, device):
             reconstruction, mu, log_var = model(data)
             bce_loss, var_loss = model.loss(data, reconstruction, mu, log_var)
             loss = bce_loss + var_loss
-            running_loss += bce_loss.item()
-        
+            running_bce_loss += bce_loss.item()
+            running_elbo += -loss.item()
+
             # save the last batch input and output of every epoch
             if i == int(len(dataset)/dataloader.batch_size) - 1:
                 recon_images = reconstruction
-    val_loss = running_loss / counter
-    return val_loss, recon_images
+    val_recon_loss = running_bce_loss / counter
+    val_elbo = running_elbo / counter
+    return val_recon_loss, val_elbo, recon_images
 

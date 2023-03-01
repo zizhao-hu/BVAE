@@ -26,7 +26,7 @@ dmodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
 emodel = ConvVAE(beta = 10, C=20, r=0.5,name = "BDBeta-b10-C20-r1").to(device)
 # set the learning parameters
 lr = 0.001
-epochs = 1
+epochs = 2
 batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
@@ -70,12 +70,13 @@ for i, model in enumerate(models):
         train_epoch_loss = engine.train(
             model, trainloader, trainset, device, optimizer,
         )
-        valid_epoch_loss, recon_images = engine.validate(
+        valid_epoch_recon_loss,valid_epoch_elbo, recon_images = engine.validate(
             model, testloader, testset, device
         )
         myle_score = le_score(model.fc_mu.weight.data)
         dict[model.name]["train_loss"].append(train_epoch_loss)
-        dict[model.name]["valid_loss"].append(valid_epoch_loss)
+        dict[model.name]["valid_elbo"].append(valid_epoch_elbo)
+        dict[model.name]["valid_recon_loss"].append(valid_epoch_recon_loss)
         dict[model.name]["le_score"].append(myle_score)
        
         # # save the reconstructed images from the validation loop
@@ -90,9 +91,9 @@ for i, model in enumerate(models):
 #     # save the reconstructions as a .gif file
 # image_to_vid(grid_images)
 # # save the loss plots to disk
-save_plot(dict,xlabel = "Epochs",ylabel ="valid_loss")
+save_plot(dict,xlabel = "Epochs",ylabel ="valid_recon_loss")
 save_plot(dict,xlabel = "Epochs",ylabel ="le_score")
-
+save_plot(dict,xlabel = "Epochs",ylabel ="valid_elbo")
 save_latent_scatter(amodel, testloader, testset, device)
 save_latent_scatter(bmodel, testloader, testset, device)
 save_latent_scatter(cmodel, testloader, testset, device)
