@@ -66,4 +66,5 @@ def save_latent_scatter(model, dataloader, dataset, device):
 def le_score(weight):
     vec = nn.functional.normalize(weight, p=2, dim=1)
     vec = torch.pow(torch.mm(vec,vec.T),2)
-    return torch.sum(vec)/vec.shape[0]/vec.shape[1]
+    le = (torch.sum(vec)-vec.shape[0])/vec.shape[0]/(vec.shape[0]-1)
+    return le.item()
