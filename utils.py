@@ -38,5 +38,5 @@ def save_latent_scatter(latent, y):
     plt.xlabel("Latent dimension 1")
     plt.ylabel("Latent dimension 2")
     legend = plt.legend(*scatter.legend_elements(), loc="upper right", title="Classes")
-    plt.savefig(path +'/outputs/latent.jpg')
+    plt.savefig(path +'/outputs/nonbilatent.jpg')
     plt.show()
