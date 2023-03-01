@@ -17,11 +17,11 @@ def image_to_vid(images):
 def save_reconstructed_images(recon_images, epoch):
     save_image(recon_images.cpu(), cwd + f"/outputs/output{epoch}.jpg")
 
-def save_plot(data, xlabel='x', ylabel='y'):
+def save_plot(dict, xlabel='x', ylabel='y'):
     # loss plots
     plt.figure(figsize=(10, 7))
-    for model_name, metrics in data:
-        for key, val in metrics:
+    for model_name, metrics in dict.items():
+        for key, val in metrics.items():
             if key == ylabel:
                 plt.plot(val,label=model_name)
     plt.xlabel(xlabel)
