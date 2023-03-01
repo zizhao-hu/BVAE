@@ -42,7 +42,7 @@ def save_latent_scatter(latent, y):
             plt.axis('square')
     
     plt.figlegend(*scatter.legend_elements(), loc = 'lower center', ncol=5, labelspacing=0.)
-    plt.savefig(path +'/outputs/latent.jpg')
+    plt.savefig(path +'/outputs/BIlatent.jpg')
     plt.show()
 
 def le_score(weight):

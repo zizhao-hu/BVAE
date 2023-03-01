@@ -18,7 +18,7 @@ matplotlib.style.use('ggplot')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # initialize the model
-model = ConvVAE().to(device)
+model = ConvVAE(r=0.5).to(device)
 
 # set the learning parameters
 lr = 0.001
