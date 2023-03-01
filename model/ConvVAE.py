@@ -106,4 +106,6 @@ class ConvVAE(nn.Module):
         # get the latent vector through reparameterization
         z = self.reparameterize(mu, log_var)
         reconstruction = self.decode(z)
+        print(reconstruction[0])
+        print(x[0])
         return reconstruction, mu, log_var
