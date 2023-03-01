@@ -51,7 +51,7 @@ testloader = DataLoader(
     testset, batch_size=batch_size, shuffle=False
 )
 
-dict = defaultdict(defaultdict(list))
+dict = defaultdict(lambda: defaultdict(list))
 models = [amodel, bmodel]
 optimizers = [aoptimizer, boptimizer]
 
