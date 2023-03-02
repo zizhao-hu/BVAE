@@ -15,7 +15,7 @@ from utils import save_reconstructed_images, image_to_vid, save_plot, save_laten
 import os
 path = os.getcwd()
 from umap import UMAP
-
+cwd = os.getcwd()
 matplotlib.style.use('ggplot')
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -140,9 +140,9 @@ for i_row in range(3):
         
         scatter = plt.subplot(3,4,3*i_row+i_col+1).scatter(latent[:,0], latent[:,1], c=y, cmap='tab10',s =2)
 
-    plt.figlegend(*scatter.legend_elements(), loc = 'lower left', ncol=5, labelspacing=0.1)
-    plt.savefig(cwd +f'/outputs/all_umap.jpg')
-    plt.show()
+plt.figlegend(*scatter.legend_elements(), loc = 'lower left', ncol=5, labelspacing=0.1)
+plt.savefig(cwd +f'/outputs/all_umap.jpg')
+plt.show()
 
 save_plot(dict,xlabel = "Epochs",ylabel ="valid_recon_loss")
 save_plot(dict,xlabel = "Epochs",ylabel ="le_score")
