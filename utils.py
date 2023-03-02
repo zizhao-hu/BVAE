@@ -49,7 +49,7 @@ def save_latent_scatter(model, dataloader, dataset, device):
     latent, y = get_latent(model, dataloader, dataset, device)
     latent = latent.detach().cpu().numpy()
     y = y.cpu().numpy()
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(8,8))
     for i in range(4):
         for j in range(i,4):
             if j==i:
@@ -61,7 +61,7 @@ def save_latent_scatter(model, dataloader, dataset, device):
             plt.axis('square')
             plt.axis('equal')
     
-    plt.figlegend(*scatter.legend_elements(), loc = 'lower center', ncol=5, labelspacing=0.)
+    plt.figlegend(*scatter.legend_elements(), loc = 'lower left', ncol=5, labelspacing=0.1)
     plt.savefig(cwd +f'/outputs/{model.name}_latent.jpg')
     plt.show()
 
