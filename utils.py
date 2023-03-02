@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 from torchvision.utils import save_image
 from tqdm import tqdm
 import os
+from cycler import cycler
+import matplotlib as mpl
+color = plt.cm.tab20(np.linspace(0, 1,20))
+mpl.rcParams['axes.prop_cycle'] = cycler('color', color)
 
 to_pil_image = transforms.ToPILImage()
 cwd = os.getcwd()
@@ -27,7 +31,7 @@ def save_plot(dict, xlabel='x', ylabel='y'):
                 plt.plot(val,label=model_name)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
-    plt.legend()
+    plt.legend(loc = 'lower left')
     plt.savefig(cwd +'/outputs/' + f"{ylabel}.jpg")
     plt.show()
 
@@ -60,8 +64,8 @@ def save_latent_scatter(model, dataloader, dataset, device):
                 plt.ylabel(f"Latent {i+1}")
             plt.axis('square')
             plt.axis('equal')
-    
-    plt.figlegend(*scatter.legend_elements(), loc = 'lower left', ncol=5, labelspacing=0.1)
+            break
+    plt.figlegend(*scatter.legend_elements(), loc = 'lower left', ncol=5, labelspacing=0.1, prop={'size': 8})
     plt.savefig(cwd +f'/outputs/{model.name}_latent.jpg')
     plt.show()
 
