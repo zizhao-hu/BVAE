@@ -58,8 +58,8 @@ testloader = DataLoader(
 )
 
 dict = defaultdict(lambda: defaultdict(list))
-models = [amodel, bmodel, cmodel, dmodel]
-optimizers = [aoptimizer, boptimizer, coptimizer,doptimizer]
+models = [amodel, bmodel, cmodel, dmodel, emodel]
+optimizers = [aoptimizer, boptimizer, coptimizer,doptimizer, eoptimizer]
 
 for i, model in enumerate(models):
     optimizer = optimizers[i]

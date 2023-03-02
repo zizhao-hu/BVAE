@@ -65,7 +65,7 @@ def save_latent_scatter(model, dataloader, dataset, device):
     plt.savefig(cwd +f'/outputs/{model.name}_latent.jpg')
     plt.show()
 
-def save_umap_scatter(models, dataloader, dataset, device):
+def save_umap_scatter(model, dataloader, dataset, device):
     latent, y = get_latent(model, dataloader, dataset, device)
     latent = latent.detach().cpu().numpy()
     y = y.cpu().numpy()
