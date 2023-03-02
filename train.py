@@ -4,7 +4,7 @@ import torch.nn as nn
 from model.ConvVAE import ConvVAE
 import torchvision.transforms as transforms
 import torchvision
-import matplotlib
+import matplotlib as mpl
 from collections import defaultdict
 tree = lambda: defaultdict(tree)
 from torch.utils.data import DataLoader
