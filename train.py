@@ -28,7 +28,7 @@ dmodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
 emodel = ConvVAE(beta = 10, C=20, r=0.5,name = "BDBeta-b10-C20-r1").to(device)
 # set the learning parameters
 lr = 0.001
-epochs = 50
+epochs = 2
 batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
@@ -67,8 +67,6 @@ testloader = DataLoader(
 # for i, model in enumerate(models):
 #     optimizer = optimizers[i]
 #     for epoch in range(epochs):
-#         if model.C != 0:
-#             model.C = epoch/2+0.01
 #         print(f"{model.name}: Epoch {epoch+1} of {epochs}")
 #         train_epoch_loss = engine.train(
 #             model, trainloader, trainset, device, optimizer,
@@ -118,8 +116,6 @@ for i_row in range(3):
         model = ConvVAE(name = f"r={myr}_b={myb}_C={myC}_ConvVAE",r = myr, beta =myb, C = myC).to(device)
         optimizer = optim.Adam(model.parameters(), lr=lr)
         for epoch in range(epochs):
-            if model.C != 0:
-                model.C = epoch/2+0.01
             print(f"{model.name}: Epoch {epoch+1} of {epochs}")
             train_epoch_loss = engine.train(
                 model, trainloader, trainset, device, optimizer,
