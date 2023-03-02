@@ -28,7 +28,7 @@ dmodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
 emodel = ConvVAE(beta = 10, C=20, r=0.5,name = "BDBeta-b10-C20-r1").to(device)
 # set the learning parameters
 lr = 0.001
-epochs = 1
+epochs = 50
 batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
@@ -138,7 +138,7 @@ for i_row in range(3):
         y = y.cpu().numpy()
         latent = UMAP().fit_transform(latent)
         
-        scatter = plt.subplot(3,4,3*i_row+i_col+1).scatter(latent[:,0], latent[:,1], c=y, cmap='tab10',s =2)
+        scatter = plt.subplot(3,4,4*i_row+i_col+1).scatter(latent[:,0], latent[:,1], c=y, cmap='tab10',s =0.5)
 
 plt.figlegend(*scatter.legend_elements(), loc = 'lower left', ncol=5, labelspacing=0.1)
 plt.savefig(cwd +f'/outputs/all_umap.jpg')
