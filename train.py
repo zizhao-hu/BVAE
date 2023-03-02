@@ -26,7 +26,7 @@ dmodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
 emodel = ConvVAE(beta = 10, C=20, r=0.5,name = "BDBeta-b10-C20-r1").to(device)
 # set the learning parameters
 lr = 0.001
-epochs = 2
+epochs = 40
 batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
@@ -98,5 +98,6 @@ save_latent_scatter(amodel, testloader, testset, device)
 save_latent_scatter(bmodel, testloader, testset, device)
 save_latent_scatter(cmodel, testloader, testset, device)
 save_latent_scatter(dmodel, testloader, testset, device)
+save_latent_scatter(emodel, testloader, testset, device)
 
 print('TRAINING COMPLETE')
