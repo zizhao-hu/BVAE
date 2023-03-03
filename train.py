@@ -76,12 +76,13 @@ celebaset = torchvision.datasets.ImageFolder(
     root=path +'/data/celeba',  transform=transform
 )
 
-trainset = celebaset[:60000]
+trainset = torch.utils.data.Subset(celebaset, list(range(0,60000)))
+
 trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
 )
 
-testset = celebaset[60000:70000]
+testset = torch.utils.data.Subset(celebaset, list(range(60000,70000)))
 
 testloader = DataLoader(
     testset, batch_size=batch_size, shuffle=False
