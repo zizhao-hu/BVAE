@@ -44,24 +44,50 @@ eoptimizer = optim.Adam(emodel.parameters(), lr=lr)
 # a list to save all the reconstructed images in PyTorch grid format
 grid_images = []
 
+###### MNIST ######
 transform = transforms.Compose([
     transforms.Resize((32, 32)),
     transforms.ToTensor(),
 ])
 # training set and train data loader
-trainset = torchvision.datasets.CelabA(
+trainset = torchvision.datasets.MNIST(
     root=path +'/data', train=True, download=True, transform=transform
 )
 trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
 )
 # validation set and validation data loader
-testset = torchvision.datasets.CelabA(
+testset = torchvision.datasets.MNIST(
     root=path +'/data', train=False, download=True, transform=transform
 )
 testloader = DataLoader(
     testset, batch_size=batch_size, shuffle=False
 )
+###### MNIST ######
+###### CELEBA ######
+
+transform = transforms.Compose([
+    transforms.Resize((32, 32)),
+    transforms.ToTensor(),
+])
+# training set and train data loader
+trainset = torchvision.datasets.ImageFolder(
+    root=path +'/data/celeba', train=True, download=True, transform=transform
+)
+trainloader = DataLoader(
+    trainset, batch_size=batch_size, shuffle=True
+)
+# validation set and validation data loader
+testset = torchvision.datasets.ImageFolder(
+    root=path +'/data/celeba', train=False, download=True, transform=transform
+)
+testloader = DataLoader(
+    testset, batch_size=batch_size, shuffle=False
+)
+
+###### CELEBA ######
+
+
 
 ##### experiment 1 ######
 dict = defaultdict(lambda: defaultdict(list))
@@ -94,7 +120,7 @@ for i, model in enumerate(models):
 
 
 #     # save the reconstructions as a .gif file
-image_to_vid(grid_images)
+# image_to_vid(grid_images)
 # # save the loss plots to disk
 save_plot(dict,xlabel = "Epochs",ylabel ="valid_recon_loss")
 save_plot(dict,xlabel = "Epochs",ylabel ="le_score")
