@@ -26,15 +26,15 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # initialize the model
 amodel = ConvVAE().to(device)
-bmodel = ConvVAE(r=0.5, name = "BVAE-r0.5").to(device)
+bmodel = ConvVAE(r=0.1, name = "B-VAE-r0.1").to(device)
 cmodel = ConvVAE(beta=10, name = "Beta-b10").to(device)
-dmodel = ConvVAE(beta=10, r= 0.5, name = "BBeta-b10-r0.5").to(device)
+dmodel = ConvVAE(beta=10, r= 0.1, name = "B-Beta-b10-r0.1").to(device)
 emodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
-fmodel = ConvVAE(beta = 10, C=20, r=0.5,name = "B-DBeta-b10-C20-r0.5").to(device)
+fmodel = ConvVAE(beta = 10, C=20, r=0.1,name = "B-DBeta-b10-C20-r0.1").to(device)
 
 # set the learning parameters
 lr = 0.001
-epochs = 40
+epochs = 50
 batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
