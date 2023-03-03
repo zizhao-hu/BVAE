@@ -71,8 +71,8 @@ def save_latent_scatter(model, dataloader, dataset, device):
 
 def save_inter_latent(batch_img, model):
     latent,_ = model.encode(batch_img)
-    latent_max = torch.max(latent, 0)
-    latent_min = torch.min(latent, 0)
+    latent_max,_ = torch.max(latent, 0)
+    latent_min,_ = torch.min(latent, 0)
     print(latent_max)
     print(latent_min)
     print(latent.shape)
