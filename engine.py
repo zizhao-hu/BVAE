@@ -43,7 +43,7 @@ def validate(model, dataloader, dataset, device):
             running_elbo += -loss.item()/dataloader.batch_size
 
             # save the last batch input and output of every epoch
-            if i == int(len(dataset)/dataloader.batch_size) - 1:
+            if i == 0:
                 recon_images = reconstruction
     val_recon_loss = running_bce_loss / counter
     val_elbo = running_elbo / counter

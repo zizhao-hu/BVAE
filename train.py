@@ -32,7 +32,7 @@ dmodel = ConvVAE(beta = 10, C=10, name = "DBeta-b10-C10").to(device)
 emodel = ConvVAE(beta = 10, C=10, r=1,name = "B-DBeta-b10-C10-r1").to(device)
 # set the learning parameters
 lr = 0.001
-epochs = 10
+epochs = 40
 batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
@@ -42,7 +42,7 @@ doptimizer = optim.Adam(dmodel.parameters(), lr=lr)
 eoptimizer = optim.Adam(emodel.parameters(), lr=lr)
 
 # a list to save all the reconstructed images in PyTorch grid format
-grid_images = []
+
 
 # ###### MNIST ######
 # transform = transforms.Compose([
@@ -98,6 +98,7 @@ models = [amodel]
 optimizers = [aoptimizer, boptimizer, coptimizer,doptimizer, eoptimizer]
 
 for i, model in enumerate(models):
+    grid_images = []
     optimizer = optimizers[i]
     for epoch in range(epochs):
         print(f"{model.name}: Epoch {epoch+1} of {epochs}")
@@ -114,16 +115,19 @@ for i, model in enumerate(models):
         dict[model.name]["le_score"].append(myle_score)
        
         # # save the reconstructed images from the validation loop
+        if i ==0 and epoch == 0:
+            save_reconstructed_images(iter(testloader).__next__()[0], epoch, model.name)
         save_reconstructed_images(recon_images, epoch+1, model.name)
         # convert the reconstructed images to PyTorch image grid format
         image_grid = make_grid(recon_images.detach().cpu())
         grid_images.append(image_grid)
+    image_to_vid(grid_images)
+
         # print(f"Train Loss: {train_epoch_loss:.4f}")
         # print(f"Val Loss: {valid_epoch_loss:.4f}")
 
 
 #     # save the reconstructions as a .gif file
-# image_to_vid(grid_images)
 # # save the loss plots to disk
 save_plot(dict,xlabel = "Epochs",ylabel ="valid_recon_loss")
 save_plot(dict,xlabel = "Epochs",ylabel ="le_score")
