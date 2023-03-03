@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import engine
 import numpy as np
 from cycler import cycler
-from utils import save_reconstructed_images, image_to_vid, save_plot, save_latent_scatter, le_score,get_latent
+from utils import save_reconstructed_images, image_to_vid, save_plot, save_latent_scatter, le_score,get_latent,save_inter_latent
 import os
 path = os.getcwd()
 from umap import UMAP
@@ -26,13 +26,15 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # initialize the model
 amodel = ConvVAE().to(device)
-bmodel = ConvVAE(r=1, name = "Binarized-r1").to(device)
+bmodel = ConvVAE(r=0.1, name = "BVAE-r0.1").to(device)
 cmodel = ConvVAE(beta=10, name = "Beta-b10").to(device)
-dmodel = ConvVAE(beta = 10, C=10, name = "DBeta-b10-C10").to(device)
-emodel = ConvVAE(beta = 10, C=10, r=1,name = "B-DBeta-b10-C10-r1").to(device)
+dmodel = ConvVAE(beta=10, r= 0.1, name = "BBeta-b10-r0.1").to(device)
+emodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
+fmodel = ConvVAE(beta = 10, C=20, r=0.1,name = "B-DBeta-b10-C20-r0.1").to(device)
+
 # set the learning parameters
 lr = 0.001
-epochs = 40
+epochs = 2
 batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
@@ -40,6 +42,8 @@ boptimizer = optim.Adam(bmodel.parameters(), lr=lr)
 coptimizer = optim.Adam(cmodel.parameters(), lr=lr)
 doptimizer = optim.Adam(dmodel.parameters(), lr=lr)
 eoptimizer = optim.Adam(emodel.parameters(), lr=lr)
+foptimizer = optim.Adam(fmodel.parameters(), lr=lr)
+
 
 # a list to save all the reconstructed images in PyTorch grid format
 
@@ -94,8 +98,8 @@ testloader = DataLoader(
 
 ##### experiment 1 ######
 dict = defaultdict(lambda: defaultdict(list))
-models = [amodel]
-optimizers = [aoptimizer, boptimizer, coptimizer,doptimizer, eoptimizer]
+models = [amodel, bmodel, cmodel,dmodel,emodel,fmodel]
+optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer, eoptimizer,foptimizer]
 
 for i, model in enumerate(models):
     grid_images = []
@@ -122,7 +126,7 @@ for i, model in enumerate(models):
         image_grid = make_grid(recon_images.detach().cpu())
         grid_images.append(image_grid)
     image_to_vid(grid_images)
-
+    save_inter_latent(iter(testloader).__next__()[0], model)
         # print(f"Train Loss: {train_epoch_loss:.4f}")
         # print(f"Val Loss: {valid_epoch_loss:.4f}")
 

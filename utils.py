@@ -68,6 +68,17 @@ def save_latent_scatter(model, dataloader, dataset, device):
     plt.savefig(cwd +f'/outputs/{model.name}_latent.jpg')
     plt.show()
 
+
+def save_inter_latent(batch_img, model):
+    latent,_ = model.encode(batch_img)
+    latent_max = torch.max(latent, 0)
+    latent_min = torch.min(latent, 1)
+    for i in range(8):
+        for j in range(8):
+            latent[i*8+j][0] = latent_min[0] + i/7*(latent_max[0]-latent_min[0])
+            latent[i*8+j][1] = latent_min[1] + i/7*(latent_max[1]-latent_min[1])
+    img = model.decode(latent)
+    save_image(img.cpu(), cwd + f"/outputs/{model.name}_iter_latent.jpg")
     
 def le_score(weight):
     vec = nn.functional.normalize(weight, p=2, dim=1)
