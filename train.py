@@ -33,7 +33,7 @@ emodel = ConvVAE(beta = 10, C=10, r=1,name = "B-DBeta-b10-C10-r1").to(device)
 # set the learning parameters
 lr = 0.001
 epochs = 1
-batch_size = 128
+batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
 boptimizer = optim.Adam(bmodel.parameters(), lr=lr)
@@ -72,14 +72,16 @@ transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 # training set and train data loader
-trainset = torchvision.datasets.ImageFolder(
+celebaset = torchvision.datasets.ImageFolder(
     root=path +'/data/celeba',  transform=transform
 )
+
+trainset = celebaset[:60000]
 trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
 )
 
-testset = trainset
+testset = celebaset[60000:70000]
 
 testloader = DataLoader(
     testset, batch_size=batch_size, shuffle=False
@@ -91,7 +93,7 @@ testloader = DataLoader(
 
 ##### experiment 1 ######
 dict = defaultdict(lambda: defaultdict(list))
-models = [amodel, bmodel, cmodel, dmodel, emodel]
+models = [amodel]
 optimizers = [aoptimizer, boptimizer, coptimizer,doptimizer, eoptimizer]
 
 for i, model in enumerate(models):
