@@ -79,7 +79,7 @@ def save_inter_latent(batch_img, model):
         for j in range(8):
             latent[i*8+j] = latent[0]
             latent[i*8+j][idx[0]] = latent_min[idx[0]] + i/7*(latent_max[idx[0]]-latent_min[idx[0]])
-            latent[i*8+j][idx[1]] = latent_min[idx[1]] + i/7*(latent_max[idx[1]]-latent_min[idx[1]])
+            latent[i*8+j][idx[1]] = latent_min[idx[1]] + j/7*(latent_max[idx[1]]-latent_min[idx[1]])
     img = model.decode(latent)
     save_image(img.cpu(), cwd + f"/outputs/{model.name}_iter_latent.jpg")
 
