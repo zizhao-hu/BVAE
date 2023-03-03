@@ -73,7 +73,7 @@ def save_inter_latent(batch_img, model):
     latent,_ = model.encode(batch_img)
     latent_max,_ = torch.max(latent, 0)
     latent_min,_ = torch.min(latent, 0)
-    idx = torch.topk(torch.max-latent_min, 2).indices
+    idx = torch.topk(latent_max-latent_min, 2).indices
     
     for i in range(8):
         for j in range(8):
