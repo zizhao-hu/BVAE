@@ -126,7 +126,7 @@ for i, model in enumerate(models):
         image_grid = make_grid(recon_images.detach().cpu())
         grid_images.append(image_grid)
     image_to_vid(grid_images)
-    save_inter_latent(iter(testloader).__next__()[0], model)
+    save_inter_latent(iter(testloader).__next__()[0].to(device), model)
         # print(f"Train Loss: {train_epoch_loss:.4f}")
         # print(f"Val Loss: {valid_epoch_loss:.4f}")
 
