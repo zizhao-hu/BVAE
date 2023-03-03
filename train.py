@@ -64,6 +64,7 @@ grid_images = []
 #     testset, batch_size=batch_size, shuffle=False
 # )
 # ###### MNIST ######
+
 ###### CELEBA ######
 
 transform = transforms.Compose([
@@ -72,15 +73,14 @@ transform = transforms.Compose([
 ])
 # training set and train data loader
 trainset = torchvision.datasets.ImageFolder(
-    root=path +'/data/celeba', train=True, download=True, transform=transform
+    root=path +'/data/celeba',  transform=transform
 )
 trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
 )
-# validation set and validation data loader
-testset = torchvision.datasets.ImageFolder(
-    root=path +'/data/celeba', train=False, download=True, transform=transform
-)
+
+testset = trainset
+
 testloader = DataLoader(
     testset, batch_size=batch_size, shuffle=False
 )
