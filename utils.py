@@ -19,8 +19,8 @@ def image_to_vid(images):
     imgs = [np.array(to_pil_image(img)) for img in images]
     imageio.mimsave(cwd + '/outputs/generated_images.gif', imgs)
 
-def save_reconstructed_images(recon_images, epoch):
-    save_image(recon_images.cpu(), cwd + f"/outputs/output{epoch}.jpg")
+def save_reconstructed_images(recon_images, epoch, name):
+    save_image(recon_images.cpu(), cwd + f"/outputs/{name}_output{epoch}.jpg")
 
 def save_plot(dict, xlabel='x', ylabel='y'):
     # loss plots

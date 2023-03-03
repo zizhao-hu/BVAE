@@ -32,7 +32,7 @@ dmodel = ConvVAE(beta = 10, C=10, name = "DBeta-b10-C10").to(device)
 emodel = ConvVAE(beta = 10, C=10, r=1,name = "B-DBeta-b10-C10-r1").to(device)
 # set the learning parameters
 lr = 0.001
-epochs = 1
+epochs = 10
 batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
@@ -114,7 +114,7 @@ for i, model in enumerate(models):
         dict[model.name]["le_score"].append(myle_score)
        
         # # save the reconstructed images from the validation loop
-        save_reconstructed_images(recon_images, epoch+1)
+        save_reconstructed_images(recon_images, epoch+1, model.name)
         # convert the reconstructed images to PyTorch image grid format
         image_grid = make_grid(recon_images.detach().cpu())
         grid_images.append(image_grid)
