@@ -6,7 +6,7 @@ import torch.nn.functional as F
 ### model configs
 kernel_size = 4 # (4, 4) kernel
 init_channels = 8 # initial number of filters
-image_channels = 3 # MNIST images are grayscale
+image_channels = 3 
 latent_dim = 16 # latent dimension for sampling
 ###
 
@@ -64,6 +64,7 @@ class ConvVAE(nn.Module):
         x = F.relu(self.enc2(x))
         x = F.relu(self.enc3(x))
         x = F.relu(self.enc4(x))
+        print(x.shape)
         batch, _, _, _ = x.shape
         x = F.adaptive_avg_pool2d(x, 1).reshape(batch, -1)
         hidden = self.fc1(x)
