@@ -77,7 +77,6 @@ class ConvVAE(nn.Module):
         x = F.relu(self.enc3(x))
         x = F.relu(self.enc3d5(x))
         x = F.relu(self.enc4(x))
-        print(x.shape)
         batch, _, _, _ = x.shape
         x = F.adaptive_avg_pool2d(x, 1).reshape(batch, -1)
         hidden = self.fc1(x)
