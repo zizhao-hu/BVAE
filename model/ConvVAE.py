@@ -28,8 +28,12 @@ class ConvVAE(nn.Module):
             in_channels=init_channels*2, out_channels=init_channels*4, kernel_size=kernel_size, 
             stride=2, padding=1
         )
+        self.enc3d5 = nn.Conv2d(
+            in_channels=init_channels*4, out_channels=init_channels*8, kernel_size=kernel_size, 
+            stride=2, padding=1
+        )
         self.enc4 = nn.Conv2d(
-            in_channels=init_channels*4, out_channels=64, kernel_size=kernel_size, 
+            in_channels=init_channels*8, out_channels=64, kernel_size=kernel_size, 
             stride=2, padding=0
         )
         # fully connected layers for learning representations
@@ -50,10 +54,18 @@ class ConvVAE(nn.Module):
             in_channels=init_channels*4, out_channels=init_channels*2, kernel_size=kernel_size, 
             stride=2, padding=1
         )
+        self.dec3d5 = nn.ConvTranspose2d(
+            in_channels=init_channels*2, out_channels=init_channels, kernel_size=kernel_size, 
+            stride=2, padding=1
+        )
         self.dec4 = nn.ConvTranspose2d(
             in_channels=init_channels*2, out_channels=image_channels, kernel_size=kernel_size, 
             stride=2, padding=1
         )
+        # self.dec4 = nn.ConvTranspose2d(
+        #     in_channels=init_channels*2, out_channels=image_channels, kernel_size=kernel_size, 
+        #     stride=2, padding=1
+        # )
         self.beta = beta
         self.C = C
         self.r = r
