@@ -33,8 +33,8 @@ emodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
 fmodel = ConvVAE(beta = 10, C=20, r=0.1,name = "B-DBeta-b10-C20-r0.1").to(device)
 
 # set the learning parameters
-lr = 0.001
-epochs = 50
+lr = 0.002
+epochs = 25
 batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
@@ -140,6 +140,7 @@ save_latent_scatter(amodel, testloader, testset, device)
 save_latent_scatter(bmodel, testloader, testset, device)
 save_latent_scatter(cmodel, testloader, testset, device)
 save_latent_scatter(dmodel, testloader, testset, device)
+save_latent_scatter(emodel, testloader, testset, device)
 save_latent_scatter(fmodel, testloader, testset, device)
 
 ##### experiment 2 ######
