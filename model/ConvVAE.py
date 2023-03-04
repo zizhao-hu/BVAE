@@ -75,6 +75,7 @@ class ConvVAE(nn.Module):
         x = F.relu(self.enc1(x))
         x = F.relu(self.enc2(x))
         x = F.relu(self.enc3(x))
+        x = F.relu(self.enc3d5(x))
         x = F.relu(self.enc4(x))
         print(x.shape)
         batch, _, _, _ = x.shape
@@ -102,6 +103,7 @@ class ConvVAE(nn.Module):
         x = F.relu(self.dec1(z))
         x = F.relu(self.dec2(x))
         x = F.relu(self.dec3(x))
+        x = F.relu(self.dec3d5(x))
         reconstruction = torch.sigmoid(self.dec4(x))
 
         return reconstruction
