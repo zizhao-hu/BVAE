@@ -72,7 +72,7 @@ foptimizer = optim.Adam(fmodel.parameters(), lr=lr)
 ###### CELEBA ######
 
 transform = transforms.Compose([
-    transforms.Resize((32, 32)),
+    transforms.Resize((64, 64)),
     transforms.ToTensor(),
 ])
 # training set and train data loader
