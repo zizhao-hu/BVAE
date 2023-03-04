@@ -59,7 +59,7 @@ class ConvVAE(nn.Module):
             stride=2, padding=1
         )
         self.dec4 = nn.ConvTranspose2d(
-            in_channels=init_channels*2, out_channels=image_channels, kernel_size=kernel_size, 
+            in_channels=init_channels, out_channels=image_channels, kernel_size=kernel_size, 
             stride=2, padding=1
         )
         # self.dec4 = nn.ConvTranspose2d(
@@ -121,3 +121,8 @@ class ConvVAE(nn.Module):
         z = self.reparameterize(mu, log_var)
         reconstruction = self.decode(z)
         return reconstruction, mu, log_var
+
+
+# from torchsummary import summary
+
+# summary(ConvVAE(), input_size=(3, 64, 64))
