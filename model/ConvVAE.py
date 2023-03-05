@@ -121,7 +121,3 @@ class ConvVAE(nn.Module):
         reconstruction = self.decode(z)
         return reconstruction, mu, log_var
 
-
-from torchsummary import summary
-
-summary(ConvVAE(), input_size=(3, 64, 64))
