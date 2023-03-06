@@ -1,7 +1,7 @@
 import torch; torch.manual_seed(0)
 import torch.nn as nn
 import torch.nn.functional as F
-from ... import ConvVAE
+from model.ConvVAE import ConvVAE
 
 class VATE(ConvVAE):
 
