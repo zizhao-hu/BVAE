@@ -1,7 +1,6 @@
 import torch
 import torch.optim as optim
 import torch.nn as nn
-from model.ConvVAE import ConvVAE
 from model.VATE import VATE
 import torchvision.transforms as transforms
 import torchvision
@@ -130,7 +129,7 @@ for i, model in enumerate(models):
         dict[model.name]["valid_elbo"].append(valid_epoch_elbo)
         dict[model.name]["valid_recon_loss"].append(valid_epoch_recon_loss)
         dict[model.name]["le_score"].append(myle_score)
-        
+
         # # save the reconstructed images from the validation loop
         if i ==0 and epoch == 0:
             save_reconstructed_images(iter(testloader).__next__()[0], epoch, model.name)
