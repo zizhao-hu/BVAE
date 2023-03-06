@@ -112,14 +112,14 @@ for i, model in enumerate(models):
             model, trainloader, trainset, device, optimizer,
         )
         if i < 3:
-            latent,_= get_latent(model, trainloader, trainset, device)
+            latent = model.iter(trainloader).__next__()[0]
             vars = torch.var(latent)
             logvar = torch.log(vars)
             model.curlogvar = (model.curlogvar + logvar)/2
         for i in range(16):
             plt.axvline(i*3, color='grey',linestyle = '--')
-            plot = plot_gaussian(i, latent[i],legend_label = 'prior', color = 'blue',linewidth =2)
-            plot = plot_gaussian(i, latent[i],legend_label = 'prior', color = 'blue',linewidth =2)
+            plot = plot_gaussian(i, latent[i].cpu().numpy(),legend_label = 'prior', color = 'blue',linewidth =2)
+            plot = plot_gaussian(i, latent[i].cpu.numpy(),legend_label = 'prior', color = 'blue',linewidth =2)
             plt.xticks([]) 
         plt.gca().set_xlim(-5,60)
         plt.savefig(cwd +f'/outputs/gaussian.jpg')
