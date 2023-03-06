@@ -112,7 +112,7 @@ for i, model in enumerate(models):
             model, trainloader, trainset, device, optimizer,
         )
         if i < 3:
-            latent = model.iter(trainloader).__next__()[0]
+            latent = model(iter(trainloader).__next__()[0])
             vars = torch.var(latent)
             logvar = torch.log(vars)
             model.curlogvar = (model.curlogvar + logvar)/2
