@@ -116,7 +116,7 @@ for i, model in enumerate(models):
             var = torch.var(latent, dim = 0)
             logvar = torch.log(var)
             model.curlogvar = (model.curlogvar + logvar)/2
-            print(latent.shape)
+            print(var.shape)
         for i in range(16):
             plt.axvline(i*3, color='grey',linestyle = '--')
             plot = plot_gaussian(i, latent[i].detach().cpu(),legend_label = 'prior', color = 'blue',linewidth =2)
