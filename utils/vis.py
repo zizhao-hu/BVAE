@@ -9,6 +9,7 @@ from tqdm import tqdm
 import os
 from cycler import cycler
 import matplotlib as mpl
+
 color = plt.cm.tab20(np.linspace(0, 1,20))
 mpl.rcParams['axes.prop_cycle'] = cycler('color', color)
 
@@ -17,10 +18,10 @@ cwd = os.getcwd()
 
 def image_to_vid(images):
     imgs = [np.array(to_pil_image(img)) for img in images]
-    imageio.mimsave(cwd + '/outputs_2/generated_images.gif', imgs)
+    imageio.mimsave(cwd + '/outputs/generated_images.gif', imgs)
 
 def save_reconstructed_images(recon_images, epoch, name):
-    save_image(recon_images.cpu(), cwd + f"/outputs_2/{name}_output{epoch}.jpg")
+    save_image(recon_images.cpu(), cwd + f"/outputs/{name}_output{epoch}.jpg")
 
 def save_plot(dict, xlabel='x', ylabel='y'):
     # loss plots
@@ -32,7 +33,7 @@ def save_plot(dict, xlabel='x', ylabel='y'):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.legend(loc = 'lower left')
-    plt.savefig(cwd +'/outputs_2/' + f"{ylabel}.jpg")
+    plt.savefig(cwd +'/outputs/' + f"{ylabel}.jpg")
     plt.show()
 
 def get_latent(model, dataloader, dataset, device):
@@ -65,7 +66,7 @@ def save_latent_scatter(model, dataloader, dataset, device):
             plt.axis('square')
             plt.axis('equal')
     plt.figlegend(*scatter.legend_elements(), loc = 'lower left', ncol=5, labelspacing=0.1, prop={'size': 8})
-    plt.savefig(cwd +f'/outputs_2/{model.name}_latent.jpg')
+    plt.savefig(cwd +f'/outputs/{model.name}_latent.jpg')
     plt.show()
 
 
@@ -88,11 +89,37 @@ def save_inter_latent(batch_img, model):
             latentb[i*8+j][idxb[1]] = latent_min[idxb[1]] + j/7*(latent_max[idxb[1]]-latent_min[idxb[1]])
     imgt = model.decode(latentt)
     imgb = model.decode(latentb)
-    save_image(imgt.cpu(), cwd + f"/outputs_2/{model.name}_iter_t2.jpg")
-    save_image(imgb.cpu(), cwd + f"/outputs_2/{model.name}_iter_b2.jpg")
+    save_image(imgt.cpu(), cwd + f"/outputs/{model.name}_iter_t2.jpg")
+    save_image(imgb.cpu(), cwd + f"/outputs/{model.name}_iter_b2.jpg")
 
 def le_score(weight):
     vec = nn.functional.normalize(weight, p=2, dim=1)
     vec = torch.pow(torch.mm(vec,vec.T),2)
     le = (torch.sum(vec)-vec.shape[0])/vec.shape[0]/(vec.shape[0]-1)
     return le.item()
+
+def plot_gaussian(mean, std, lower_bound=None, upper_bound=None, legend = False,linestyle ='-',linewidth=2,
+    title=None, x_label=None, y_label=None, legend_label=None, legend_location="upper right", color = 'blue'):
+    
+    lower_bound = ( mean - 4*std ) if lower_bound is None else lower_bound
+    upper_bound = ( mean + 4*std ) if upper_bound is None else upper_bound
+    resolution  = 100
+  
+    title        = title        
+    x_label      = x_label 
+    y_label      = y_label
+    legend_label = legend_label 
+    
+    X = np.linspace(lower_bound, upper_bound, resolution)
+    std = torch.exp(std)**0.5
+    dist_X = 1./(np.sqrt(2*np.pi)*std)*np.exp(-0.5 * (1./std*(X - mean))**2)
+    # dist_X += 0.1 * np.random.rand(X.shape[0])
+    plt.title(title)
+    
+    plt.plot(X, dist_X, label=legend_label, color = color, linestyle = linestyle, linewidth=linewidth)
+    if x_label: plt.xlabel(x_label) 
+    if y_label: plt.ylabel(y_label) 
+    if legend:
+      plt.legend(loc=legend_location, prop={'size': 9})
+    # plt.axvline(0, color='grey',linestyle = '--')
+    return plt

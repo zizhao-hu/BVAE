@@ -2,6 +2,7 @@ import torch
 import torch.optim as optim
 import torch.nn as nn
 from model.ConvVAE import ConvVAE
+from model.VATE import VATE
 import torchvision.transforms as transforms
 import torchvision
 import matplotlib as mpl
@@ -13,8 +14,9 @@ import matplotlib.pyplot as plt
 import engine
 import numpy as np
 from cycler import cycler
-from utils.vis import save_reconstructed_images, image_to_vid, save_plot, save_latent_scatter, save_inter_latent
+from utils.vis import save_reconstructed_images, image_to_vid, save_plot, save_latent_scatter, save_inter_latent,plot_gaussian
 from utils.math import le_score
+from utils.utils import get_latent
 import os
 path = os.getcwd()
 from umap import UMAP
@@ -26,12 +28,11 @@ mpl.rcParams['axes.prop_cycle'] = cycler('color', color)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # initialize the model
+bmodel = VATE(name = "VATE_V").to(device)
+cmodel = VATE(name = "VATE_N", norm = True).to(device)
+dmodel = VATE(B = 10, name = "VATE_NB", norm = True).to(device)
 amodel = ConvVAE().to(device)
-bmodel = ConvVAE(r=0.5, name = "B-VAE-r0.5").to(device)
-cmodel = ConvVAE(beta=10, name = "Beta-b10").to(device)
-dmodel = ConvVAE(beta=10, r= 0.5, name = "B-Beta-b10-r0.5").to(device)
-emodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
-fmodel = ConvVAE(beta = 10, C=20, r=0.5,name = "B-DBeta-b10-C20-r0.5").to(device)
+emodel = ConvVAE(name = "AE").to(device)
 
 # set the learning parameters
 lr = 0.001
@@ -43,7 +44,6 @@ boptimizer = optim.Adam(bmodel.parameters(), lr=lr)
 coptimizer = optim.Adam(cmodel.parameters(), lr=lr)
 doptimizer = optim.Adam(dmodel.parameters(), lr=lr)
 eoptimizer = optim.Adam(emodel.parameters(), lr=lr)
-foptimizer = optim.Adam(fmodel.parameters(), lr=lr)
 
 
 # a list to save all the reconstructed images in PyTorch grid format
@@ -99,8 +99,8 @@ testloader = DataLoader(
 
 ##### experiment 1 ######
 dict = defaultdict(lambda: defaultdict(list))
-models = [amodel, bmodel, cmodel,dmodel,emodel,fmodel]
-optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer, eoptimizer,foptimizer]
+models = [amodel, bmodel, cmodel,dmodel,emodel]
+optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer, eoptimizer]
 
 for i, model in enumerate(models):
     grid_images = []
@@ -110,6 +110,17 @@ for i, model in enumerate(models):
         train_epoch_loss = engine.train(
             model, trainloader, trainset, device, optimizer,
         )
+        if i < 3:
+            latent,_= get_latent(model, trainloader, trainset, device)
+            vars = torch.var(latent)
+            logvar = torch.log(vars)
+            model.curlogvar = (model.curlogvar + logvar)/2
+        for i in range(16):
+            plt.axvline(i*3, color='grey',linestyle = '--')
+            plot = plot_gaussian(i, variance[i],legend_label = 'prior', color = 'orange',linewidth =2)
+            plt.xticks([]) 
+            plt.gca().set_xlim(-5,60)
+            plt.savefig(cwd +f'/outputs/gaussian.jpg')
         valid_epoch_recon_loss,valid_epoch_elbo, recon_images = engine.validate(
             model, testloader, testset, device
         )
@@ -142,7 +153,6 @@ save_latent_scatter(bmodel, testloader, testset, device)
 save_latent_scatter(cmodel, testloader, testset, device)
 save_latent_scatter(dmodel, testloader, testset, device)
 save_latent_scatter(emodel, testloader, testset, device)
-save_latent_scatter(fmodel, testloader, testset, device)
 
 ##### experiment 2 ######
 
