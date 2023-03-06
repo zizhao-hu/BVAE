@@ -2,13 +2,14 @@ import torch; torch.manual_seed(0)
 import torch.nn as nn
 import torch.nn.functional as F
 from model.ConvVAE import ConvVAE
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class VATE(ConvVAE):
 
     def __init__(self, name = 'VATE', norm = False, r=0, beta=1, C=0):
         super().__init__(name = name,r=r, beta=beta,C=C )
         self.norm = norm
-        self.curlogvar = torch.ones(16)
+        self.curlogvar = torch.ones(16).to(device)
     
     def loss(self, x, reconstruction, mu, log_var):
         recon_bce = nn.BCELoss(reduction='sum')(reconstruction, x)
