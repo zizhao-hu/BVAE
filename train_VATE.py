@@ -27,10 +27,10 @@ mpl.rcParams['axes.prop_cycle'] = cycler('color', color)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # initialize the model
-bmodel = VATE(name = "VATE_V").to(device)
-cmodel = VATE(name = "VATE_N", norm = True).to(device)
-dmodel = VATE(B = 10, name = "VATE_NB", norm = True).to(device)
-amodel = ConvVAE().to(device)
+amodel = VATE(name = "VATE_V").to(device)
+bmodel = VATE(name = "VATE_N", norm = True).to(device)
+cmodel = VATE(B = 10, name = "VATE_NB", norm = True).to(device)
+dmodel = ConvVAE().to(device)
 emodel = ConvVAE(name = "AE").to(device)
 
 # set the learning parameters
