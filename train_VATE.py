@@ -82,7 +82,7 @@ celebaset = torchvision.datasets.ImageFolder(
     root=path +'/data/celeba',  transform=transform
 )
 
-trainset = torch.utils.data.Subset(celebaset, list(range(0,60000)))
+trainset = torch.utils.data.Subset(celebaset, list(range(0,10)))
 
 trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
@@ -112,9 +112,9 @@ for i, model in enumerate(models):
             model, trainloader, trainset, device, optimizer,
         )
         if i < 3:
-            latent = model(iter(trainloader).__next__()[0].to(device))
-            vars = torch.var(latent)
-            logvar = torch.log(vars)
+            _,latent,vars = model(iter(trainloader).__next__()[0].to(device))
+            var = torch.var(latent)
+            logvar = torch.log(var)
             model.curlogvar = (model.curlogvar + logvar)/2
         for i in range(16):
             plt.axvline(i*3, color='grey',linestyle = '--')
