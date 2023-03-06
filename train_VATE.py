@@ -2,6 +2,8 @@ import torch
 import torch.optim as optim
 import torch.nn as nn
 from model.VATE import VATE
+from model.ConvVAE import ConvVAE
+
 import torchvision.transforms as transforms
 import torchvision
 import matplotlib as mpl
@@ -29,7 +31,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # initialize the model
 amodel = VATE(name = "VATE_V").to(device)
 bmodel = VATE(name = "VATE_N", norm = True).to(device)
-cmodel = VATE(B = 10, name = "VATE_NB", norm = True).to(device)
+cmodel = VATE(beta = 10, name = "VATE_NB", norm = True).to(device)
 dmodel = ConvVAE().to(device)
 emodel = ConvVAE(name = "AE").to(device)
 
