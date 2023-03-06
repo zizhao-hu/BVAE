@@ -117,10 +117,11 @@ for i, model in enumerate(models):
             model.curlogvar = (model.curlogvar + logvar)/2
         for i in range(16):
             plt.axvline(i*3, color='grey',linestyle = '--')
-            plot = plot_gaussian(i, variance[i],legend_label = 'prior', color = 'orange',linewidth =2)
+            plot = plot_gaussian(i, latent[i],legend_label = 'prior', color = 'blue',linewidth =2)
+            plot = plot_gaussian(i, latent[i],legend_label = 'prior', color = 'blue',linewidth =2)
             plt.xticks([]) 
-            plt.gca().set_xlim(-5,60)
-            plt.savefig(cwd +f'/outputs/gaussian.jpg')
+        plt.gca().set_xlim(-5,60)
+        plt.savefig(cwd +f'/outputs/gaussian.jpg')
         valid_epoch_recon_loss,valid_epoch_elbo, recon_images = engine.validate(
             model, testloader, testset, device
         )
@@ -129,7 +130,7 @@ for i, model in enumerate(models):
         dict[model.name]["valid_elbo"].append(valid_epoch_elbo)
         dict[model.name]["valid_recon_loss"].append(valid_epoch_recon_loss)
         dict[model.name]["le_score"].append(myle_score)
-       
+        
         # # save the reconstructed images from the validation loop
         if i ==0 and epoch == 0:
             save_reconstructed_images(iter(testloader).__next__()[0], epoch, model.name)
