@@ -18,6 +18,7 @@ def train(model, dataloader, dataset, device, optimizer):
         if model.beta != 1:
             var_loss = var_loss * model.beta
         loss = bce_loss + var_loss
+        
         loss.backward()
         running_loss += loss.item()
         optimizer.step()
