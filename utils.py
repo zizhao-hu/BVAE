@@ -17,10 +17,10 @@ cwd = os.getcwd()
 
 def image_to_vid(images):
     imgs = [np.array(to_pil_image(img)) for img in images]
-    imageio.mimsave(cwd + '/outputs_1/generated_images.gif', imgs)
+    imageio.mimsave(cwd + '/outputs_2/generated_images.gif', imgs)
 
 def save_reconstructed_images(recon_images, epoch, name):
-    save_image(recon_images.cpu(), cwd + f"/outputs_1/{name}_output{epoch}.jpg")
+    save_image(recon_images.cpu(), cwd + f"/outputs_2/{name}_output{epoch}.jpg")
 
 def save_plot(dict, xlabel='x', ylabel='y'):
     # loss plots
@@ -32,7 +32,7 @@ def save_plot(dict, xlabel='x', ylabel='y'):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.legend(loc = 'lower left')
-    plt.savefig(cwd +'/outputs_1/' + f"{ylabel}.jpg")
+    plt.savefig(cwd +'/outputs_2/' + f"{ylabel}.jpg")
     plt.show()
 
 def get_latent(model, dataloader, dataset, device):
@@ -65,7 +65,7 @@ def save_latent_scatter(model, dataloader, dataset, device):
             plt.axis('square')
             plt.axis('equal')
     plt.figlegend(*scatter.legend_elements(), loc = 'lower left', ncol=5, labelspacing=0.1, prop={'size': 8})
-    plt.savefig(cwd +f'/outputs_1/{model.name}_latent.jpg')
+    plt.savefig(cwd +f'/outputs_2/{model.name}_latent.jpg')
     plt.show()
 
 
@@ -88,8 +88,8 @@ def save_inter_latent(batch_img, model):
             latentb[i*8+j][idxb[1]] = latent_min[idxb[1]] + j/7*(latent_max[idxb[1]]-latent_min[idxb[1]])
     imgt = model.decode(latentt)
     imgb = model.decode(latentb)
-    save_image(imgt.cpu(), cwd + f"/outputs_1/{model.name}_iter_t2.jpg")
-    save_image(imgb.cpu(), cwd + f"/outputs_1/{model.name}_iter_b2.jpg")
+    save_image(imgt.cpu(), cwd + f"/outputs_2/{model.name}_iter_t2.jpg")
+    save_image(imgb.cpu(), cwd + f"/outputs_2/{model.name}_iter_b2.jpg")
 
 def le_score(weight):
     vec = nn.functional.normalize(weight, p=2, dim=1)
