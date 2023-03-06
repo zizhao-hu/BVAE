@@ -33,9 +33,9 @@ emodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
 fmodel = ConvVAE(beta = 10, C=20, r=0.5,name = "B-DBeta-b10-C20-r0.5").to(device)
 
 # set the learning parameters
-lr = 0.001
+lr = 0.0005
 epochs = 40
-batch_size = 16
+batch_size = 4
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
 boptimizer = optim.Adam(bmodel.parameters(), lr=lr)
