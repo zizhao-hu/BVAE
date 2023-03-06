@@ -113,7 +113,7 @@ for i, model in enumerate(models):
         )
         if i < 3:
             _,latent,vars = model(iter(trainloader).__next__()[0].to(device))
-            var = torch.var(latent)
+            var = torch.var(latent, dim = 0)
             logvar = torch.log(var)
             model.curlogvar = (model.curlogvar + logvar)/2
             print(latent.shape)
