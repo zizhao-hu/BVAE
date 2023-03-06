@@ -5,8 +5,8 @@ from model.ConvVAE import ConvVAE
 
 class VATE(ConvVAE):
 
-    def __init__(self, norm = False):
-        super().__init__(norm)
+    def __init__(self, norm = False, r=0, b=1, C=0):
+        super().__init__(name = 'VATE',r=r, b=b,C=C )
         self.norm = norm
         self.curlogvar = torch.ones(16)
     
