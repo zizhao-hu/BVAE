@@ -18,7 +18,7 @@ class VATE(ConvVAE):
             norm_loss = self.le_score()
             return recon_bce, var_loss, norm_loss
         else:
-            return recon_bce, var_loss
+            return 10*recon_bce, var_loss
         
     def le_score(self):
         weight = self.fc_mu.weight.data
