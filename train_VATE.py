@@ -32,7 +32,6 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 amodel = VATE(name = "VATE_A").to(device)
 bmodel = VATE(name = "VATE_B", norm = True).to(device)
 cmodel = VATE(name = "VATE_C", norm = True, r = 0.5).to(device)
-reconstruction, est_mu, est_logvar,prior_mu, prior_logvar = model(data)
 dmodel = ConvVAE().to(device)
 
 # set the learning parameters
