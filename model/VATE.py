@@ -23,8 +23,7 @@ class VATE(ConvVAE):
         est_mu, est_logvar = self.encode(x)
         agg_mu = torch.mean(est_mu, dim = 0)
         agg_logvar =  torch.log(torch.var(est_mu, dim = 0))
-        print(agg_logvar)
-        print(est_logvar)
+
         # get the latent vector through reparameterization
         z = self.reparameterize(est_mu, est_logvar)
         reconstruction = self.decode(z)
