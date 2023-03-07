@@ -40,7 +40,11 @@ def validate(model, dataloader, dataset, device):
             counter += 1
             data= data[0]
             data = data.to(device)
-            reconstruction, est_mu, est_logvar = model(data)
+            if 'VATE' in model.name:
+                reconstruction, est_mu, est_logvar,prior_mu, prior_logvar = model(data)
+                bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar, prior_mu.detach(), prior_logvar.detach())
+            else:
+                reconstruction, est_mu, est_logvar = model(data)
             agg_mu = torch.mean(est_mu, dim = 0)
             agg_logvar =  torch.log(torch.var(est_mu, dim = 0))
 
