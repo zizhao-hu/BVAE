@@ -21,32 +21,38 @@ from utils.utils import get_latent
 import os
 path = os.getcwd()
 from umap import UMAP
+# settings
 cwd = os.getcwd()
 mpl.style.use('ggplot')
-
 color = plt.cm.tab20(np.linspace(0, 1,20))
 mpl.rcParams['axes.prop_cycle'] = cycler('color', color)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-# initialize the model
+
+# initialize the models
 amodel = VATE(name = "VATE_A").to(device)
 bmodel = VATE(name = "VATE_B", norm = True).to(device)
 cmodel = VATE(name = "VATE_C", norm = True, r = 0.5).to(device)
+cmodel = VATE(name = "VATE_D", norm = True, r = 0.5).to(device)
+
 dmodel = ConvVAE().to(device)
+
 
 # set the learning parameters
 lr = 0.001
-epochs = 40
+epochs = 3
 batch_size = 64
 
+# initialize the optimizers
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
 boptimizer = optim.Adam(bmodel.parameters(), lr=lr)
 coptimizer = optim.Adam(cmodel.parameters(), lr=lr)
 doptimizer = optim.Adam(dmodel.parameters(), lr=lr)
 
+models = [amodel, bmodel, cmodel,dmodel]
+optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer]
 
-# a list to save all the reconstructed images in PyTorch grid format
-
+# dataset
 
 # ###### MNIST ######
 # transform = transforms.Compose([
@@ -92,14 +98,10 @@ testloader = DataLoader(
     testset, batch_size=batch_size, shuffle=False
 )
 
-###### CELEBA ######
-
-
 
 ##### experiment 1 ######
-dict = defaultdict(lambda: defaultdict(list))
-models = [amodel, bmodel, cmodel,dmodel]
-optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer]
+logs = defaultdict(lambda: defaultdict(list))
+
 
 for i, model in enumerate(models):
     grid_images = []
@@ -121,15 +123,19 @@ for i, model in enumerate(models):
             model, testloader, testset, device
         )
         myle_score = le_score(model.fc_mu.weight.data)
-        dict[model.name]["train_loss"].append(train_epoch_loss)
-        dict[model.name]["valid_elbo"].append(valid_epoch_elbo)
-        dict[model.name]["valid_recon_loss"].append(valid_epoch_recon_loss)
-        dict[model.name]["le_score"].append(myle_score)
 
-        # # save the reconstructed images from the validation loop
+        logs[model.name]["train_loss"].append(train_epoch_loss)
+        logs[model.name]["valid_elbo"].append(valid_epoch_elbo)
+        logs[model.name]["valid_recon_loss"].append(valid_epoch_recon_loss)
+        logs[model.name]["le_score"].append(myle_score)
+
+        # save the reference images
         if i ==0 and epoch == 0:
             save_reconstructed_images(iter(testloader).__next__()[0], epoch, model.name)
+
+        # save the reconstructed images 
         save_reconstructed_images(recon_images, epoch+1, model.name)
+
         # convert the reconstructed images to PyTorch image grid format
         image_grid = make_grid(recon_images.detach().cpu())
         grid_images.append(image_grid)
