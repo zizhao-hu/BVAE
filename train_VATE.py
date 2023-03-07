@@ -39,7 +39,7 @@ gmodel = ConvVAE(name = "ConvVAE_2", norm=True).to(device)
 hmodel = ConvVAE(name = "ConvVAE_3",norm = True, r = 0.2).to(device)
 # set the learning parameters
 lr = 0.001
-epochs = 40
+epochs = 2
 batch_size = 64
 
 # initialize the optimizers
