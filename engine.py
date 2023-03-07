@@ -15,7 +15,8 @@ def train(model, dataloader, dataset, device, optimizer):
         
         agg_mu = torch.mean(est_mu, dim = 0)
         agg_logvar =  torch.log(torch.var(est_mu, dim = 0))
-
+        print(agg_logvar)
+        print(est_logvar)
         prior_mu = (agg_mu + est_mu)/2
         prior_var = (agg_logvar + est_logvar)/2
 
