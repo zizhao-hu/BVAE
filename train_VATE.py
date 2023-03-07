@@ -112,13 +112,13 @@ for i, model in enumerate(models):
             model, trainloader, trainset, device, optimizer,
         )
         
-        for i in range(16):
-            plt.axvline(i*3, color='grey',linestyle = '--')
-            plot = plot_gaussian(i, var[i].detach().cpu(),legend_label = 'posterior', color = 'blue',linewidth =2)
-            plot = plot_gaussian(i, model.curlogvar[i].detach().cpu(),legend_label = 'prior', color = 'red',linewidth =2)
-            plt.xticks([]) 
-        plt.gca().set_xlim(-5,60)
-        plt.savefig(cwd +f'/outputs/gaussian.jpg')
+        # for i in range(16):
+        #     plt.axvline(i*3, color='grey',linestyle = '--')
+        #     plot = plot_gaussian(i, var[i].detach().cpu(),legend_label = 'posterior', color = 'blue',linewidth =2)
+        #     plot = plot_gaussian(i, model.curlogvar[i].detach().cpu(),legend_label = 'prior', color = 'red',linewidth =2)
+        #     plt.xticks([]) 
+        # plt.gca().set_xlim(-5,60)
+        # plt.savefig(cwd +f'/outputs/gaussian.jpg')
         valid_epoch_recon_loss,valid_epoch_elbo, recon_images = engine.validate(
             model, testloader, testset, device
         )
