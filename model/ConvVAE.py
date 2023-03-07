@@ -110,11 +110,7 @@ class ConvVAE(nn.Module):
     def loss(self, x, reconstruction, mu, logvar, prior_mu=0, prior_logvar=0):
         recon_bce = nn.BCELoss(reduction='sum')(reconstruction, x)
         var_loss =  -0.5 * torch.sum(1 + logvar-prior_logvar - (torch.abs(mu-prior_mu)-self.r).pow(2) - (logvar-prior_logvar).exp())
-        if self.norm:
-            norm_loss = self.le_score()
-            return recon_bce, var_loss, norm_loss
-        else:
-            return recon_bce, var_loss
+        return recon_bce, var_loss
             
 
     def forward(self, x):

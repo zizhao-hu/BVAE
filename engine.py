@@ -16,11 +16,15 @@ def train(model, dataloader, dataset, device, optimizer):
             bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar, prior_mu.detach(), prior_logvar.detach())
         else:
             reconstruction, est_mu, est_logvar = model(data)
+
+        
         if model.C != 0:
             var_loss = abs(var_loss - model.C)
         if model.beta != 1:
             var_loss = var_loss * model.beta
         loss = bce_loss + var_loss
+        if model.norm:
+            loss += model.le_score()
         
         loss.backward()
         running_loss += loss.item()
