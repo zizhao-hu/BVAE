@@ -30,15 +30,11 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 # initialize the models
+dmodel = ConvVAE().to(device)
 amodel = VATE(name = "VATE_A", norm = True, r=0.5).to(device)
 bmodel = VATE(name = "VATE_B", norm = True).to(device)
 cmodel = VATE(name = "VATE_C", norm = True, r = 0.5).to(device)
 dmodel = VATE(name = "VATE_C", norm = True, r = 0.5).to(device)
-
-
-
-
-dmodel = ConvVAE().to(device)
 
 
 # set the learning parameters

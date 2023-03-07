@@ -16,7 +16,7 @@ def train(model, dataloader, dataset, device, optimizer):
             bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar, prior_mu.detach(), prior_logvar.detach())
         else:
             reconstruction, est_mu, est_logvar = model(data)
-
+            bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar)
         
         if model.C != 0:
             var_loss = abs(var_loss - model.C)
