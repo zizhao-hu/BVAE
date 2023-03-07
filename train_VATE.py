@@ -145,9 +145,9 @@ for i, model in enumerate(models):
 
 #     # save the reconstructions as a .gif file
 # # save the loss plots to disk
-save_plot(dict,xlabel = "Epochs",ylabel ="valid_recon_loss")
-save_plot(dict,xlabel = "Epochs",ylabel ="le_score")
-save_plot(dict,xlabel = "Epochs",ylabel ="valid_elbo")
+save_plot(logs,xlabel = "Epochs",ylabel ="valid_recon_loss")
+save_plot(logs,xlabel = "Epochs",ylabel ="le_score")
+save_plot(logs,xlabel = "Epochs",ylabel ="valid_elbo")
 save_latent_scatter(amodel, testloader, testset, device)
 save_latent_scatter(bmodel, testloader, testset, device)
 save_latent_scatter(cmodel, testloader, testset, device)
@@ -155,7 +155,7 @@ save_latent_scatter(dmodel, testloader, testset, device)
 
 ##### experiment 2 ######
 
-# dict = defaultdict(lambda: defaultdict(list))
+# logs = defaultdict(lambda: defaultdict(list))
 # r = [0,0.1,1,2]
 # beta = [1, 10, 10]
 # C = [0, 0, 10]
@@ -176,10 +176,10 @@ save_latent_scatter(dmodel, testloader, testset, device)
 #                 model, testloader, testset, device
 #             )
 #             myle_score = le_score(model.fc_mu.weight.data)
-#             dict[model.name]["train_loss"].append(train_epoch_loss)
-#             dict[model.name]["valid_elbo"].append(valid_epoch_elbo)
-#             dict[model.name]["valid_recon_loss"].append(valid_epoch_recon_loss)
-#             dict[model.name]["le_score"].append(myle_score)
+#             logs[model.name]["train_loss"].append(train_epoch_loss)
+#             logs[model.name]["valid_elbo"].append(valid_epoch_elbo)
+#             logs[model.name]["valid_recon_loss"].append(valid_epoch_recon_loss)
+#             logs[model.name]["le_score"].append(myle_score)
         
 #         latent, y = get_latent(model, testloader, testset, device)
 #         latent = latent.detach().cpu().numpy()
@@ -192,8 +192,8 @@ save_latent_scatter(dmodel, testloader, testset, device)
 # plt.savefig(cwd +f'/outputs/all_umap.jpg')
 # plt.show()
 
-# save_plot(dict,xlabel = "Epochs",ylabel ="valid_recon_loss")
-# save_plot(dict,xlabel = "Epochs",ylabel ="le_score")
-# save_plot(dict,xlabel = "Epochs",ylabel ="valid_elbo")
+# save_plot(logs,xlabel = "Epochs",ylabel ="valid_recon_loss")
+# save_plot(logs,xlabel = "Epochs",ylabel ="le_score")
+# save_plot(logs,xlabel = "Epochs",ylabel ="valid_elbo")
 
 # print('TRAINING COMPLETE')
