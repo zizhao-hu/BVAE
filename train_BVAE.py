@@ -35,7 +35,7 @@ fmodel = ConvVAE(beta = 10, C=10, r=0.5,name = "B-DBeta-b10-C20-r0.5").to(device
 
 # set the learning parameters
 lr = 0.001
-epochs = 5
+epochs = 40
 batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
@@ -81,7 +81,7 @@ celebaset = torchvision.datasets.ImageFolder(
     root=path +'/data/celeba',  transform=transform
 )
 
-trainset = torch.utils.data.Subset(celebaset, list(range(0,100)))
+trainset = torch.utils.data.Subset(celebaset, list(range(0,60000)))
 
 trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
