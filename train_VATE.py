@@ -39,7 +39,7 @@ gmodel = ConvVAE(name = "ConvVAE_2", norm=True).to(device)
 hmodel = ConvVAE(name = "ConvVAE_3",norm = True, r = 0.2).to(device)
 # set the learning parameters
 lr = 0.001
-epochs = 2
+epochs = 40
 batch_size = 64
 
 # initialize the optimizers
@@ -89,7 +89,7 @@ celebaset = torchvision.datasets.ImageFolder(
     root=path +'/data/celeba',  transform=transform
 )
 
-trainset = torch.utils.data.Subset(celebaset, list(range(100)))
+trainset = torch.utils.data.Subset(celebaset, list(range(600000)))
 
 trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
