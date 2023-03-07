@@ -30,12 +30,13 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # initialize the models
 amodel = VATE(name = "FVAE").to(device)
-bmodel = VATE(name = "VATE_B").to(device)
-dmodel = VATE(name = "VATE_D", norm = True).to(device)
-cmodel = VATE(name = "VATE_C", r = 0.2).to(device)
-dmodel = VATE(name = "VATE_D", norm = True, r = 0.2).to(device)
-emodel = ConvVAE(name = "ConvVAE").to(device)
-
+bmodel = VATE(name = "VATE_A").to(device)
+cmodel = VATE(name = "VATE_B", norm = True).to(device)
+dmodel = VATE(name = "VATE_C", r = 0.2).to(device)
+emodel = VATE(name = "VATE_D", norm = True, r = 0.2).to(device)
+fmodel = ConvVAE(name = "ConvVAE_1", r = 0.2).to(device)
+gmodel = ConvVAE(name = "ConvVAE_2", norm=True).to(device)
+hmodel = ConvVAE(name = "ConvVAE_3",norm = True, r = 0.2).to(device)
 # set the learning parameters
 lr = 0.001
 epochs = 40
@@ -85,7 +86,7 @@ celebaset = torchvision.datasets.ImageFolder(
     root=path +'/data/celeba',  transform=transform
 )
 
-trainset = torch.utils.data.Subset(celebaset, list(range(100)))
+trainset = torch.utils.data.Subset(celebaset, list(range(60000)))
 
 trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
