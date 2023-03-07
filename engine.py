@@ -20,7 +20,7 @@ def train(model, dataloader, dataset, device, optimizer):
             model.eval()
             with torch.no_grad():
                 recon_mu, recon_logvar = model.encode(reconstruction)
-                bce_loss = kl(est_mu, est_logvar, recon_mu, recon_logvar)
+                bce_loss += kl(est_mu, est_logvar, recon_mu, recon_logvar)
         else:
             reconstruction, est_mu, est_logvar = model(data)
             bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar)
