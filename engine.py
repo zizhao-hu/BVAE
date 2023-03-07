@@ -11,8 +11,15 @@ def train(model, dataloader, dataset, device, optimizer):
         data = data[0]
         data = data.to(device)
         optimizer.zero_grad()
-        reconstruction, mu, log_var = model(data)
-        bce_loss, var_loss = model.loss(data, reconstruction, mu, log_var)
+        reconstruction, est_mu, est_logvar = model(data)
+        
+        agg_mu = torch.mean(est_mu, dim = 0)
+        agg_logvar =  torch.log(torch.var(est_mu, dim = 0))
+
+        prior_mu = (agg_mu + est_mu)/2
+        prior_var = (agg_logvar + est_logvar)/2
+
+        bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_mu, prior_mu.detach(), prior_var.detach())
         if model.C != 0:
             var_loss = abs(var_loss - model.C)
         if model.beta != 1:

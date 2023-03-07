@@ -9,12 +9,11 @@ class VATE(ConvVAE):
     def __init__(self, name = 'VATE', norm = False, r=0, beta=1, C=0):
         super().__init__(name = name,r=r, beta=beta,C=C )
         self.norm = norm
-        self.curlogvar = torch.ones(16).detach().to(device)
+        self.curlogvar = (torch.ones(16)*6).detach().to(device)
     
-    def loss(self, x, reconstruction, mu, log_var):
-        self.curlogvar = ((self.curlogvar + log_var)/2).detach()
+    def loss(self, x, reconstruction, mu, logvar, prior_mu, prior_logvar):
         recon_bce = nn.BCELoss(reduction='sum')(reconstruction, x)
-        var_loss =  -0.5 * torch.sum(1 + log_var-self.curlogvar - (torch.abs(mu)-self.r).pow(2) - (log_var-self.curlogvar).exp())
+        var_loss =  -0.5 * torch.sum(1 + logvar-prior_logvar - (torch.abs(mu-prior_mu)-self.r).pow(2) - (logvar-prior_logvar).exp())
         if self.norm:
             norm_loss = self.le_score()
             return recon_bce, var_loss, norm_loss

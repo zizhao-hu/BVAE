@@ -111,11 +111,7 @@ for i, model in enumerate(models):
         train_epoch_loss = engine.train(
             model, trainloader, trainset, device, optimizer,
         )
-        if i < 3:
-            _,latent,vars = model(iter(trainloader).__next__()[0].to(device))
-            var = torch.var(latent, dim = 0)
-            logvar = torch.log(var)
-            model.curlogvar = (model.curlogvar + logvar)/2
+        
         for i in range(16):
             plt.axvline(i*3, color='grey',linestyle = '--')
             plot = plot_gaussian(i, var[i].detach().cpu(),legend_label = 'posterior', color = 'blue',linewidth =2)
