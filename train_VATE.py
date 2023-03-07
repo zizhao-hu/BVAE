@@ -43,7 +43,6 @@ aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
 boptimizer = optim.Adam(bmodel.parameters(), lr=lr)
 coptimizer = optim.Adam(cmodel.parameters(), lr=lr)
 doptimizer = optim.Adam(dmodel.parameters(), lr=lr)
-eoptimizer = optim.Adam(emodel.parameters(), lr=lr)
 
 
 # a list to save all the reconstructed images in PyTorch grid format
@@ -99,8 +98,8 @@ testloader = DataLoader(
 
 ##### experiment 1 ######
 dict = defaultdict(lambda: defaultdict(list))
-models = [amodel, bmodel, cmodel,dmodel,emodel]
-optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer, eoptimizer]
+models = [amodel, bmodel, cmodel,dmodel]
+optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer]
 
 for i, model in enumerate(models):
     grid_images = []
