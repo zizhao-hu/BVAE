@@ -34,7 +34,7 @@ emodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
 fmodel = ConvVAE(beta = 10, C=20, r=0.5,name = "B-DBeta-b10-C20-r0.5").to(device)
 
 # set the learning parameters
-lr = 0.01
+lr = 0.001
 epochs = 40
 batch_size = 64
 
