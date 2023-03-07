@@ -26,7 +26,7 @@ class VATE(ConvVAE):
         print(agg_logvar)
         print(est_logvar)
         # get the latent vector through reparameterization
-        z = self.reparameterize(mu, log_var)
+        z = self.reparameterize(agg_mu, agg_logvar)
         reconstruction = self.decode(z)
         return reconstruction, est_mu, est_logvar, agg_mu, agg_logvar 
 
