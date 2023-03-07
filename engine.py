@@ -54,15 +54,17 @@ def validate(model, dataloader, dataset, device):
             if 'VATE' in model.name:
                 reconstruction, est_mu, est_logvar,prior_mu, prior_logvar = model(data)
                 bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar, prior_mu.detach(), prior_logvar.detach())
+            elif 'FVAE' in model.name:
+                reconstruction, est_mu, est_logvar,prior_mu, prior_logvar = model(data)
+                bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar, prior_mu.detach(), prior_logvar.detach())
+                model.eval()
+                with torch.no_grad():
+                    recon_mu, recon_logvar = model.encode(reconstruction)
+                    bce_loss = kl(est_mu, est_logvar, recon_mu, recon_logvar)
             else:
                 reconstruction, est_mu, est_logvar = model(data)
-            agg_mu = torch.mean(est_mu, dim = 0)
-            agg_logvar =  torch.log(torch.var(est_mu, dim = 0))
+                bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar)
 
-            prior_mu = (agg_mu + est_mu)/2
-            prior_var = (agg_logvar + est_logvar)/2
-
-            bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_mu, prior_mu.detach(), prior_var.detach())
             loss = bce_loss + var_loss
             running_bce_loss += bce_loss.item()/dataloader.batch_size
             running_elbo += -loss.item()/dataloader.batch_size
