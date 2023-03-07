@@ -30,14 +30,15 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # initialize the models
 amodel = VATE(name = "FVAE").to(device)
-bmodel = VATE(name = "VATE_B", norm = True).to(device)
-cmodel = VATE(name = "VATE_C", norm = True, r = 0.5).to(device)
-dmodel = VATE(name = "VATE_D", norm = True, r = 0.5).to(device)
+bmodel = VATE(name = "VATE_B").to(device)
+dmodel = VATE(name = "VATE_D", norm = True).to(device)
+cmodel = VATE(name = "VATE_C", r = 0.2).to(device)
+dmodel = VATE(name = "VATE_D", norm = True, r = 0.2).to(device)
 emodel = ConvVAE(name = "ConvVAE").to(device)
 
 # set the learning parameters
 lr = 0.001
-epochs = 3
+epochs = 40
 batch_size = 64
 
 # initialize the optimizers
