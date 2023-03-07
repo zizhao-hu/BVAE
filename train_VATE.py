@@ -48,9 +48,12 @@ boptimizer = optim.Adam(bmodel.parameters(), lr=lr)
 coptimizer = optim.Adam(cmodel.parameters(), lr=lr)
 doptimizer = optim.Adam(dmodel.parameters(), lr=lr)
 eoptimizer = optim.Adam(emodel.parameters(), lr=lr)
+foptimizer = optim.Adam(fmodel.parameters(), lr=lr)
+goptimizer = optim.Adam(gmodel.parameters(), lr=lr)
+hoptimizer = optim.Adam(hmodel.parameters(), lr=lr)
 
-models = [amodel, bmodel, cmodel,dmodel,emodel]
-optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer, eoptimizer]
+models = [amodel, bmodel, cmodel,dmodel,emodel,fmodel,gmodel,hmodel]
+optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer, eoptimizer,foptimizer,goptimizer,hoptimizer]
 
 # dataset
 
