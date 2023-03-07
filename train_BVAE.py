@@ -30,12 +30,12 @@ amodel = ConvVAE().to(device)
 bmodel = ConvVAE(r=0.5, name = "B-VAE-r0.5").to(device)
 cmodel = ConvVAE(beta=10, name = "Beta-b10").to(device)
 dmodel = ConvVAE(beta=10, r= 0.5, name = "B-Beta-b10-r0.5").to(device)
-emodel = ConvVAE(beta = 10, C=20, name = "DBeta-b10-C20").to(device)
-fmodel = ConvVAE(beta = 10, C=20, r=0.5,name = "B-DBeta-b10-C20-r0.5").to(device)
+emodel = ConvVAE(beta = 10, C=10, name = "DBeta-b10-C20").to(device)
+fmodel = ConvVAE(beta = 10, C=10, r=0.5,name = "B-DBeta-b10-C20-r0.5").to(device)
 
 # set the learning parameters
 lr = 0.001
-epochs = 40
+epochs = 5
 batch_size = 64
 
 aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
@@ -81,7 +81,7 @@ celebaset = torchvision.datasets.ImageFolder(
     root=path +'/data/celeba',  transform=transform
 )
 
-trainset = torch.utils.data.Subset(celebaset, list(range(0,60000)))
+trainset = torch.utils.data.Subset(celebaset, list(range(0,100)))
 
 trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
