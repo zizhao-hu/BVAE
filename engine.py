@@ -1,7 +1,7 @@
 
 import torch; torch.manual_seed(0)
 from tqdm import tqdm
-
+from utils.math import kl
 def train(model, dataloader, dataset, device, optimizer):
     model.train()
     running_loss = 0.0
@@ -14,6 +14,13 @@ def train(model, dataloader, dataset, device, optimizer):
         if 'VATE' in model.name:
             reconstruction, est_mu, est_logvar,prior_mu, prior_logvar = model(data)
             bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar, prior_mu.detach(), prior_logvar.detach())
+        elif 'FVAE' in model.name:
+            reconstruction, est_mu, est_logvar,prior_mu, prior_logvar = model(data)
+            bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar, prior_mu.detach(), prior_logvar.detach())
+            model.eval()
+            with torch.no_grad():
+                recon_mu, recon_logvar = model.encode(reconstruction)
+                bce_loss = kl(est_mu, est_logvar, recon_mu, recon_logvar)
         else:
             reconstruction, est_mu, est_logvar = model(data)
             bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar)

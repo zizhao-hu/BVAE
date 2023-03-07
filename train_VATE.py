@@ -28,14 +28,12 @@ color = plt.cm.tab20(np.linspace(0, 1,20))
 mpl.rcParams['axes.prop_cycle'] = cycler('color', color)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-
 # initialize the models
-dmodel = ConvVAE().to(device)
-amodel = VATE(name = "VATE_A", norm = True, r=0.5).to(device)
+amodel = VATE(name = "FVAE").to(device)
 bmodel = VATE(name = "VATE_B", norm = True).to(device)
 cmodel = VATE(name = "VATE_C", norm = True, r = 0.5).to(device)
-dmodel = VATE(name = "VATE_C", norm = True, r = 0.5).to(device)
-
+dmodel = VATE(name = "VATE_D", norm = True, r = 0.5).to(device)
+emodel = ConvVAE(name = "ConvVAE").to(device)
 
 # set the learning parameters
 lr = 0.001
@@ -47,9 +45,10 @@ aoptimizer = optim.Adam(amodel.parameters(), lr=lr)
 boptimizer = optim.Adam(bmodel.parameters(), lr=lr)
 coptimizer = optim.Adam(cmodel.parameters(), lr=lr)
 doptimizer = optim.Adam(dmodel.parameters(), lr=lr)
+eoptimizer = optim.Adam(emodel.parameters(), lr=lr)
 
 models = [amodel, bmodel, cmodel,dmodel]
-optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer]
+optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer, eoptimizer]
 
 # dataset
 
