@@ -47,7 +47,7 @@ coptimizer = optim.Adam(cmodel.parameters(), lr=lr)
 doptimizer = optim.Adam(dmodel.parameters(), lr=lr)
 eoptimizer = optim.Adam(emodel.parameters(), lr=lr)
 
-models = [amodel, bmodel, cmodel,dmodel]
+models = [amodel, bmodel, cmodel,dmodel,emodel]
 optimizers = [aoptimizer, boptimizer, coptimizer, doptimizer, eoptimizer]
 
 # dataset
@@ -84,13 +84,13 @@ celebaset = torchvision.datasets.ImageFolder(
     root=path +'/data/celeba',  transform=transform
 )
 
-trainset = torch.utils.data.Subset(celebaset, list(range(60000)))
+trainset = torch.utils.data.Subset(celebaset, list(range(100)))
 
 trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
 )
 
-testset = torch.utils.data.Subset(celebaset, list(range(60000,65000)))
+testset = torch.utils.data.Subset(celebaset, list(range(60000,60500)))
 
 testloader = DataLoader(
     testset, batch_size=batch_size, shuffle=False
