@@ -148,7 +148,6 @@ save_latent_scatter(amodel, testloader, testset, device)
 save_latent_scatter(bmodel, testloader, testset, device)
 save_latent_scatter(cmodel, testloader, testset, device)
 save_latent_scatter(dmodel, testloader, testset, device)
-save_latent_scatter(emodel, testloader, testset, device)
 
 ##### experiment 2 ######
 
