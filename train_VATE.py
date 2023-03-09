@@ -3,7 +3,7 @@ import torch.optim as optim
 import torch.nn as nn
 from model.VATE import VATE
 from model.HBVAE import HBVAE
-
+from model.ConvVAE import ConvVAE
 import torchvision.transforms as transforms
 import torchvision
 import matplotlib as mpl
