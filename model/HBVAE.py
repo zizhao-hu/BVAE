@@ -38,7 +38,7 @@ class HBVAE(ConvVAE):
         est_mu_01 = nn.functional.sigmoid(est_mu)
         agg_mu = torch.mean(est_mu_01, dim = 0)
         pri_mu = torch.zeros_like(agg_mu)
-        pri_mu.apply_(lambda x: 0.2 if x<0.5 else 0.8)
+        pri_mu = (pri_mu>0.5).float()*0.6+0.2
         print(pri_mu)
         print(agg_mu.cpu())
         print(est_mu.cpu())
