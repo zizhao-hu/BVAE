@@ -37,7 +37,7 @@ class HBVAE(ConvVAE):
         est_mu_01 = nn.functional.softmax(est_mu)
         agg_mu = torch.mean(est_mu_01, dim = 0)
         agg_logvar =  torch.log(est_mu_01*(1-est_mu_01))
-        est_logvar = torch.zeros_like(agg_logvar).fill(est_logvar)
+        est_logvar = torch.zeros_like(agg_logvar).fill_(est_logvar)
         z = self.reparameterize(est_mu, est_logvar)
         reconstruction = self.decode(z)
         return reconstruction, est_mu_01, est_logvar, agg_mu, agg_logvar 
