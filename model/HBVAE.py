@@ -34,6 +34,7 @@ class HBVAE(ConvVAE):
     def forward(self, x):
         # encoding
         est_mu, _ = self.encode(x)
+        print(est_mu.cpu())
         est_mu_01 = nn.functional.softmax(est_mu)
         agg_mu = torch.mean(est_mu_01, dim = 0)
         agg_logvar =  torch.log(est_mu_01*(1-est_mu_01))
