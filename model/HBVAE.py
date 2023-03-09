@@ -10,7 +10,7 @@ class HBVAE(ConvVAE):
         super().__init__(name = name,r=r, beta=beta,C=C )
         self.norm = norm
         self.curlogvar = (torch.ones(16)*6).detach().to(device) 
-        self.est_logvar = 0.7*0.3   
+        self.est_prior = 0.7*0.3   
         
     def le_score(self):
         weight = self.fc_mu.weight.data
@@ -19,7 +19,7 @@ class HBVAE(ConvVAE):
         le = (torch.sum(vec)-vec.shape[0])/vec.shape[0]/(vec.shape[0]-1)
         return le.item()
     
-    def reparameterize(self, mu, log_var):
+    def reparameterize(self, mu):
         """
         :param mu: mean from the encoder's latent space
         :param log_var: log variance from the encoder's latent space
@@ -37,11 +37,11 @@ class HBVAE(ConvVAE):
         print(est_mu.cpu())
         est_mu_01 = nn.functional.sigmoid(est_mu)
         agg_mu = torch.mean(est_mu_01, dim = 0)
-        agg_logvar =  torch.log(est_mu_01*(1-est_mu_01))
-        est_logvar = torch.zeros_like(agg_logvar).fill_(self.est_logvar)
-        z = self.reparameterize(est_mu, est_logvar)
+        # agg_logvar =  torch.log(est_mu_01*(1-est_mu_01))
+        # est_logvar = torch.zeros_like(agg_logvar).fill_(self.est_logvar)
+        z = self.reparameterize(est_mu)
         print(z.cpu())
         reconstruction = self.decode(z)
-        return reconstruction, est_mu_01, est_logvar, agg_mu, agg_logvar 
+        return reconstruction, est_mu_01, agg_mu 
 
         
