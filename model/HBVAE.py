@@ -34,9 +34,10 @@ class HBVAE(ConvVAE):
     def forward(self, x):
         # encoding
         est_mu, _ = self.encode(x)
-        print(est_mu.cpu())
+        
         est_mu_01 = nn.functional.sigmoid(est_mu)
         agg_mu = torch.mean(est_mu_01, dim = 0)
+        print(agg_mu.cpu())
         # agg_logvar =  torch.log(est_mu_01*(1-est_mu_01))
         # est_logvar = torch.zeros_like(agg_logvar).fill_(self.est_logvar)
         z = self.reparameterize(est_mu)
