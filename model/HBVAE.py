@@ -32,7 +32,7 @@ class HBVAE(ConvVAE):
         print(mu)
 
         recon_bce = nn.BCELoss(reduction='sum')(reconstruction, x)
-        var_loss = nn.BCELoss(reduction='sum')(mu, prior_mu)
+        var_loss = 100*nn.BCELoss(reduction='sum')(mu, prior_mu)
         print(var_loss)
         
        
