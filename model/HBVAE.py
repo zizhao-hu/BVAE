@@ -43,7 +43,6 @@ class HBVAE(ConvVAE):
      
         pri_mu = (agg_mu>0.5).float()*0.6+0.2
 
-        pri_mu = 
         print(pri_mu)
         print(agg_mu.cpu())
         # agg_logvar =  torch.log(est_mu_01*(1-est_mu_01))
