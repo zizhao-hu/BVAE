@@ -1,7 +1,7 @@
 import torch
 import torch.optim as optim
 import torch.nn as nn
-from model.VATE import VATE
+from model.VATE import VATE, HBVAE
 from model.ConvVAE import ConvVAE
 
 import torchvision.transforms as transforms
@@ -29,7 +29,7 @@ mpl.rcParams['axes.prop_cycle'] = cycler('color', color)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # initialize the models
-amodel = VATE(name = "FVAE").to(device)
+amodel = HBVAE(name = "VATE_HBVAE").to(device)
 bmodel = VATE(name = "VATE_A").to(device)
 cmodel = VATE(name = "VATE_B", norm = True).to(device)
 dmodel = VATE(name = "VATE_C", r = 0.2).to(device)
