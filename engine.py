@@ -21,6 +21,9 @@ def train(model, dataloader, dataset, device, optimizer):
             with torch.no_grad():
                 recon_mu, recon_logvar = model.encode(reconstruction)
                 bce_loss += kl(est_mu, est_logvar, recon_mu, recon_logvar)
+        elif 'HBVAE' in model.name:
+            reconstruction, prior_mu, agg_mu = model(data)
+            bce_loss, var_loss = model.loss(data, reconstruction, agg_mu, prior_mu=prior_mu)
         else:
             reconstruction, est_mu, est_logvar = model(data)
             bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar)
