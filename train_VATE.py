@@ -1,8 +1,8 @@
 import torch
 import torch.optim as optim
 import torch.nn as nn
-from model.VATE import VATE, HBVAE
-from model.ConvVAE import ConvVAE
+from model.VATE import VATE
+from model.HBVAE import HBVAE
 
 import torchvision.transforms as transforms
 import torchvision
