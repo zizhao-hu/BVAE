@@ -33,8 +33,8 @@ class HBVAE(ConvVAE):
     def loss(self, x, reconstruction, mu):
         
         recon_bce = nn.BCELoss(reduction='sum')(reconstruction, x)
-        var_loss = nn.BCELoss(reduction='sum')(mu, prior.expand(mu.shape))
-        
+        var_loss = 10*nn.BCELoss(reduction='sum')(mu, prior.expand(mu.shape))
+        print(var_loss)
        
         return recon_bce, var_loss
     def forward(self, x):
