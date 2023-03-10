@@ -5,7 +5,8 @@ from model.ConvVAE import ConvVAE
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 rand = torch.rand(32).reshape(1,32)
-sorted,_ = rand.sort()*(0.1)+0.9
+sorted,_ = rand.sort()
+sorted = sorted *(0.1)+0.9
 prior = sorted.to(device)
 class HBVAE(ConvVAE):
 
