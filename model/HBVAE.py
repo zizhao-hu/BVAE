@@ -44,7 +44,7 @@ class HBVAE(ConvVAE):
         
         est_mu = torch.sigmoid(est_mu)
         agg_mu = torch.mean(est_mu) 
-        rep_mu = self.reparameterize(est_mu, 20)
+        rep_mu = self.reparameterize(est_mu, 2)
         reconstruction = self.decode(rep_mu)        
         return reconstruction, est_mu, agg_mu
 
