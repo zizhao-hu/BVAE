@@ -36,7 +36,7 @@ class HBVAE(ConvVAE):
         print(mu.cpu())
         print(self.prior.cpu())
         var_loss = nn.BCELoss(reduction='mean')(mu, self.prior)
-        print(var_loss)
+        print(var_loss.cpu())
         
        
         return recon_bce, var_loss
