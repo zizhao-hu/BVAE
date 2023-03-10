@@ -22,9 +22,9 @@ def train(model, dataloader, dataset, device, optimizer):
                 recon_mu, recon_logvar = model.encode(reconstruction)
                 bce_loss += kl(est_mu, est_logvar, recon_mu, recon_logvar)
         elif 'HBVAE' in model.name:
-            reconstruction, est_mu = model(data)
+            reconstruction, est_mu, pri = model(data)
 
-            bce_loss, var_loss = model.loss(data,reconstruction, est_mu)
+            bce_loss, var_loss = model.loss(data,reconstruction, est_mu, pri)
         elif "IVAE" in model.name:
             print("IVAE")
             xs, en_recons, de_recons, mus, logvars = model(data)
@@ -66,8 +66,8 @@ def validate(model, dataloader, dataset, device):
                 reconstruction, est_mu, est_logvar,prior_mu, prior_logvar = model(data)
                 bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar, prior_mu.detach(), prior_logvar.detach())
             elif 'HBVAE' in model.name:
-                reconstruction, est_mu = model(data)
-                bce_loss, var_loss = model.loss(data,reconstruction, est_mu)
+                reconstruction, est_mu, pri = model(data)
+                bce_loss, var_loss = model.loss(data,reconstruction, est_mu, pri)
             else:
                 reconstruction, est_mu, est_logvar = model(data)
                 bce_loss, var_loss = model.loss(data, reconstruction, est_mu, est_logvar)
