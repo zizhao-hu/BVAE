@@ -32,6 +32,9 @@ class HBVAE(ConvVAE):
         return eps
     def loss(self, x, reconstruction, mu):
         recon_bce = nn.BCELoss(reduction='sum')(reconstruction, x)
+
+        print(mu)
+        print(self.prior)
         var_loss = nn.BCELoss(reduction='mean')(mu, self.prior)
         print(var_loss)
         
@@ -41,7 +44,7 @@ class HBVAE(ConvVAE):
         # encoding
         est_mu, _ = self.encode(x)
         
-        est_mu = nn.functional.sigmoid(est_mu) 
+        est_mu = torch.sigmoid(est_mu) 
         rep_mu = self.reparameterize(est_mu, 20)
         z = torch.logit(rep_mu)
         reconstruction = self.decode(z)
