@@ -5,9 +5,12 @@ from model.ConvVAE import ConvVAE
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 rand = torch.rand(32).reshape(1,32)
+rand[rand>0.5] = rand[rand>0.5]*0.1+0.9
+rand[rand<0.5] = rand[rand>0.5]*0.1
 sorted,_ = rand.sort()
-sorted = sorted *(0.1)+0.9
+sorted = sorted*(0.1)+0.9
 prior = sorted.to(device)
+print(prior)
 class HBVAE(ConvVAE):
 
     def __init__(self, name = 'HBVAE', norm = False, r=0, beta=1, C=0):
@@ -43,12 +46,12 @@ class HBVAE(ConvVAE):
         est_mu, _ = self.encode(x)
         
         est_mu = torch.sigmoid(est_mu)
-        agg_mu = torch.mean(est_mu) 
+        agg_mu = torch.mean(est_mu, dim = ) 
         rep_mu = self.reparameterize(est_mu, 100)
         reconstruction = self.decode(rep_mu)      
         print(est_mu)
         print(rep_mu)
         print(agg_mu)  
-        return reconstruction, est_mu, agg_mu
+        return reconstruction, est_mu, prior
 
         
