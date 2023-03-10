@@ -29,9 +29,9 @@ class HBVAE(ConvVAE):
         for i in range(n_trials):
             eps = (eps*i + torch.bernoulli(mu))/i+1 # `randn_like` as we need the same size
         return eps
-    def loss(self, x, reconstruction, mu, prior_mu=0):
+    def loss(self, x, reconstruction, mu):
         recon_bce = nn.BCELoss(reduction='sum')(reconstruction, x)
-        var_loss = nn.BCELoss(reduction='sum')(mu, prior_mu)
+        var_loss = nn.BCELoss(reduction='sum')(mu, self.prior)
         print(var_loss)
         
        
