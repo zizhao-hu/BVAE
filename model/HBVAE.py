@@ -26,7 +26,7 @@ class HBVAE(ConvVAE):
         :param log_var: log variance from the encoder's latent space
         """
         eps = torch.zeros_like(mu)
-        for i in n_trials:
+        for i in range(n_trials):
             eps = (eps*i + torch.bernoulli(mu))/i+1 # `randn_like` as we need the same size
         return eps
     def loss(self, x, reconstruction, mu, prior_mu=0):
