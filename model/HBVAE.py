@@ -11,7 +11,7 @@ class HBVAE(ConvVAE):
         self.norm = norm
         rand = torch.rand(32).reshape(1,32)
         sorted,_ = rand.sort()
-        self.prior = sorted.expand(64,32)
+        self.prior = sorted.expand(64,32).to(device).detach()
 
         
     def le_score(self):
