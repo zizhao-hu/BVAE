@@ -32,7 +32,7 @@ class HBVAE(ConvVAE):
         return eps
     def loss(self, x, reconstruction, mu):
         recon_bce = nn.BCELoss(reduction='sum')(reconstruction, x)
-
+        
        
         print(mu.cpu())
         print(self.prior.cpu())
@@ -49,9 +49,6 @@ class HBVAE(ConvVAE):
         print(est_mu)
         rep_mu = self.reparameterize(est_mu, 20)
         reconstruction = self.decode(rep_mu)
-        print(self.prior.cpu())
-        print(est_mu.cpu())
-
         return reconstruction, est_mu
 
         
