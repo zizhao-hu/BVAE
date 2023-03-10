@@ -9,8 +9,9 @@ class HBVAE(ConvVAE):
     def __init__(self, name = 'VATE', norm = False, r=0, beta=1, C=0):
         super().__init__(name = name,r=r, beta=beta,C=C )
         self.norm = norm
-        self.curlogvar = (torch.ones(16)*6).detach().to(device) 
-        self.est_prior = 0.7*0.3   
+        rand = torch.rand(10)
+        sorted,_ = rand.sort()
+        self.prior = sorted
         
     def le_score(self):
         weight = self.fc_mu.weight.data
@@ -19,13 +20,14 @@ class HBVAE(ConvVAE):
         le = (torch.sum(vec)-vec.shape[0])/vec.shape[0]/(vec.shape[0]-1)
         return le.item()
     
-    def reparameterize(self, mu):
+    def reparameterize(self, mu, n_trials):
         """
         :param mu: mean from the encoder's latent space
         :param log_var: log variance from the encoder's latent space
         """
-       
-        eps = torch.bernoulli(mu) # `randn_like` as we need the same size
+        eps = torch.zeros_like(mu)
+        for i in n_trials:
+            eps = (eps*i + torch.bernoulli(mu))/i+1 # `randn_like` as we need the same size
         return eps
     def loss(self, x, reconstruction, mu, prior_mu=0):
         recon_bce = nn.BCELoss(reduction='sum')(reconstruction, x)
@@ -38,19 +40,10 @@ class HBVAE(ConvVAE):
         # encoding
         est_mu, _ = self.encode(x)
         
-        est_mu_01 = nn.functional.sigmoid(est_mu)
-        agg_mu = torch.mean(est_mu_01, dim = 0)
-     
-        pri_mu = (agg_mu>0.5).float()*0.6+0.2
-
-        print(pri_mu)
-        print(agg_mu.cpu())
-        # agg_logvar =  torch.log(est_mu_01*(1-est_mu_01))
-        # est_logvar = torch.zeros_like(agg_logvar).fill_(self.est_logvar)
-        sample_mu = est_mu_01
-     
-        z = self.reparameterize(sample_mu)
+        est_mu = nn.functional.sigmoid(est_mu) 
+        rep_mu = self.reparameterize(est_mu, 20)
+        z = torch.logit(rep_mu)
         reconstruction = self.decode(z)
-        return reconstruction, pri_mu, agg_mu 
+        return reconstruction, est_mu
 
         
