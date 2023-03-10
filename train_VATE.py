@@ -95,7 +95,7 @@ trainloader = DataLoader(
     trainset, batch_size=batch_size, shuffle=True
 )
 
-testset = torch.utils.data.Subset(celebaset, list(range(60000,60500)))
+testset = torch.utils.data.Subset(celebaset, list(range(60000,65000)))
 
 testloader = DataLoader(
     testset, batch_size=batch_size, shuffle=False
