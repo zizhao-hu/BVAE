@@ -28,7 +28,7 @@ class HBVAE(ConvVAE):
         """
         eps = torch.zeros_like(mu)
         for i in range(n_trials):
-            eps = (eps*i + torch.bernoulli(mu))/i+1 # `randn_like` as we need the same size
+            eps = (eps*i + torch.bernoulli(mu))/(i+1) # `randn_like` as we need the same size
         return eps
     def loss(self, x, reconstruction, mu):
         
