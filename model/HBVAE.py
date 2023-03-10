@@ -9,7 +9,7 @@ class HBVAE(ConvVAE):
     def __init__(self, name = 'HBVAE', norm = False, r=0, beta=1, C=0):
         super().__init__(name = name,r=r, beta=beta,C=C )
         self.norm = norm
-        rand = torch.rand(32).reshape(1,10)
+        rand = torch.rand(32).reshape(1,32)
         sorted,_ = rand.sort()
         self.prior = sorted.expand(64,32)
 
