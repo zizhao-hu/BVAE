@@ -5,7 +5,7 @@ from model.ConvVAE import ConvVAE
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 rand = torch.rand(32).reshape(1,32)
-sorted,_ = rand.sort()
+sorted,_ = rand.sort()*(0.1)+0.9
 prior = sorted.to(device)
 class HBVAE(ConvVAE):
 
@@ -33,7 +33,7 @@ class HBVAE(ConvVAE):
     def loss(self, x, reconstruction, mu):
         
         recon_bce = nn.BCELoss(reduction='sum')(reconstruction, x)
-        var_loss = nn.BCELoss(reduction='mean')(mu, prior.expand(mu.shape))
+        var_loss = nn.BCELoss(reduction='sum')(mu, prior.expand(mu.shape))
         
        
         return recon_bce, var_loss
