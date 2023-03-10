@@ -47,6 +47,7 @@ class HBVAE(ConvVAE):
         rep_mu = self.reparameterize(est_mu, 4)
         reconstruction = self.decode(rep_mu)      
         print(est_mu)
+        print(rep_mu)
         print(agg_mu)  
         return reconstruction, est_mu, agg_mu
 
