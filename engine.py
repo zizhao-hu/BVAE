@@ -23,8 +23,8 @@ def train(model, dataloader, dataset, device, optimizer):
                 bce_loss += kl(est_mu, est_logvar, recon_mu, recon_logvar)
         elif 'HBVAE' in model.name:
             print("HBVAE")
-            reconstruction, prior_mu, agg_mu = model(data)
-            bce_loss, var_loss = model.loss(data, reconstruction, agg_mu, prior_mu=prior_mu)
+            reconstruction, est_mu = model(data)
+            bce_loss, var_loss = model.loss(est_mu)
         elif "IVAE" in model.name:
             print("IVAE")
             xs, en_recons, de_recons, mus, logvars = model(data)
